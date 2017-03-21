@@ -1,0 +1,34 @@
+# I modified the list of ignores given to me by the latest pull.
+/bin
+/build
+/out
+
+# IntelliJ gitignore file advice taken from a 03-11-17 article on intellij-support:
+# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839-How-to-manage-projects-under-Version-Control-Systems
+
+/.idea/workspace.xml
+/.idea/tasks.xml # This wasn't there at least initially
+
+# Class files don't need to be tracked.
+.class
+
+# Go ahead and add these if you author in different languages.
+#*.{a,o,pyc,s} 
+
+# Hidden files of OSs
+*.~
+*.bak
+
+# LaTeX shit
+*.synctex.gz
+*.gz
+*.dvi
+*.out
+*.log
+*.toc
+*.aux
+*.nav
+*.bbl
+*.blg
+*.snm
+
