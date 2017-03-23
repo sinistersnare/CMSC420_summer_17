@@ -35,4 +35,10 @@ public interface Bag<Item> extends Iterable<Item>{ // So classes implementing it
      */
     void shake();
 
+    /**
+     * Returns the number of elements in the bag.
+     * @since 1.0
+     */
+    int size();
+
 }

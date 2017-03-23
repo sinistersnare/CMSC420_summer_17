@@ -1,5 +1,6 @@
 package edu.umd.cs.datastructures.bags;
 
+import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -14,7 +15,7 @@ public class StaticallyPerturbedBag<Item> implements Bag{
 
 
     private int current;
-    private Item[] storage;
+    private List<Item> storage;
     private static int DEFAULT_CAPACITY = 10;
     private static int OFFSET=3;
 
@@ -42,6 +43,16 @@ public class StaticallyPerturbedBag<Item> implements Bag{
 
     public void shake() {
 
+    }
+
+    /**
+     * Returns the number of elements in the bag.
+     *
+     * @since 1.0
+     */
+    @Override
+    public int size() {
+        return storage.size();
     }
 
 
