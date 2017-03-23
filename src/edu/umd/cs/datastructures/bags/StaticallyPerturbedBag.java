@@ -15,7 +15,7 @@ public class StaticallyPerturbedBag<Item> implements Bag{
 
 
     private int current;
-    private List<Item> storage;
+    private Item[] storage; // Will have to make a parallel list
     private static int DEFAULT_CAPACITY = 10;
     private static int OFFSET=3;
 
