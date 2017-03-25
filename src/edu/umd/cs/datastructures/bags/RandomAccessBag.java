@@ -1,11 +1,44 @@
 package edu.umd.cs.datastructures.bags;
 
-import java.util.Iterator;
+import java.util.*;
 
-/**
- * Created by jason on 3/22/17.
+/**A <b>RandomAccessBag</b> is a {@link Bag} which, when {@link #shake()}d, essentially just shakes the index sequence
+ * into the old linear collection of <b>Item</b>s. The goal is to prove that, after shaking, and for a relatively large
+ * number of <b>Item</b>s held, looping through the items using the {@link java.util.Iterator} returned by {@link #iterator()}
+ * will lead to many cache misses and will thus be slow.
+ * @version 1.0
+ * @see StaticallyPerturbedBag
+ * @see DynamicallyShuffledBag
+ * @author jason
  */
 public class RandomAccessBag<Item> implements Bag<Item>{
+
+    private Random r;
+    private int current;
+    private Item[] storage;
+    private static int DEFAULT_INIT_CAPACITY = 10;
+    private Integer[] indexList; // This will hold the indices into the storage array.
+
+
+    public RandomAccessBag(){
+        this(DEFAULT_INIT_CAPACITY);
+    }
+
+    public RandomAccessBag(int capacity){
+        storage = (Item[])new Object[capacity];
+        r = new Random();
+        current = -1;
+    }
+
+    public RandomAccessBag(long seed){
+        this(DEFAULT_INIT_CAPACITY, seed);
+    }
+
+    public RandomAccessBag(int capacity, long seed){
+        storage = (Item[])new Object[capacity];
+        r = new Random(seed);
+        current = -1;
+    }
     /**
      * Adds an <b>Item</b> to the bag.
      *
@@ -14,7 +47,21 @@ public class RandomAccessBag<Item> implements Bag<Item>{
      */
     @Override
     public void add(Item i) {
+        if(size() == capacity())
+            expand();
+        storage[++current] = i;
+    }
 
+    private void expand(){
+        int cap = capacity();
+        Item[] newStorage = (Item[]) new Object[2*cap];
+        for(int i = 0; i < cap; i++)
+            newStorage[i] = storage[i];
+        storage = newStorage;
+    }
+
+    private int capacity(){
+        return storage.length;
     }
 
     /**
@@ -25,17 +72,25 @@ public class RandomAccessBag<Item> implements Bag<Item>{
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     /**
      * "Shakes" the bag, randomly perturbing the order of its elements.
-     *
+     * @implNote The shaking routine for a <b>RandomAccessBag</b> will generate the list of indices into the existing
+     * array. randomly permute that index list, and then use the permuted indices to access the existing list.
+     * The hope is that this will lead to lots of cache misses. It is also burdened by the generation of original index list
+     * as well as the permutation of its elements. Check the Java 8 branch for various optimizations for array handling.
+     * @see DynamicallyShuffledBag#shake()
      * @since 1.0
      */
     @Override
     public void shake() {
-
+        indexList = new Integer[size()];
+        // This is the stupid pre-Java 8 way. Let's keep this branch stupid and backwards-compatible.
+        for(int i = 0; i < indexList.length; i++)
+            indexList[i] = i;
+        Collections.shuffle(Arrays.asList(indexList), r);
     }
 
     /**
@@ -45,7 +100,7 @@ public class RandomAccessBag<Item> implements Bag<Item>{
      */
     @Override
     public int size() {
-        return 0;
+        return current + 1;
     }
 
     /**
@@ -55,6 +110,20 @@ public class RandomAccessBag<Item> implements Bag<Item>{
      */
     @Override
     public Iterator<Item> iterator() {
-        return null;
+        return new Iterator<Item>() {
+            private int initSize = size();
+            private int indexIntoIndices = -1;
+            @Override
+            public boolean hasNext() {
+                return indexIntoIndices < current;
+            }
+
+            @Override
+            public Item next() {
+                if(size() != initSize)
+                    throw new ConcurrentModificationException("StaticallyPerturbedBag was mutated between calls to iterator().next().");
+                return storage[indexList[++indexIntoIndices]];
+            }
+        };
     }
 }

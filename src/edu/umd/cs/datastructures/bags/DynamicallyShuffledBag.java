@@ -1,31 +1,62 @@
 package edu.umd.cs.datastructures.bags;
 
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A DynamicallyShuffledBag is a {@link Bag} which, very much like a {@link RandomAccessBag}, shakes its contents
  * completely (pseudo-) randomly. However, it does so by storing the elements in their new order, instead of
  * indexing into the old container with a permuted index set.
- * Created by jason on 3/22/17.
+ * @see RandomAccessBag
+ * @see StaticallyPerturbedBag
+ * @version 1.0
+ * @author jason
  */
 public class DynamicallyShuffledBag<Item> implements Bag<Item>{
 
     private Random r;
-    private int DEFAULT_INIT_CAPACITY = 100;
-    private Item
+    private static int DEFAULT_INIT_CAPACITY = 10;
+    private Item[] storage;
+    private int current = -1;
     /**
      * This constructor is used to initialize the bag with full pseudorandom capabilities for shaking
      * and the default starting capacity.
      * @since 1.0
      */
     public DynamicallyShuffledBag() {
-
+        this(DEFAULT_INIT_CAPACITY);
     }
 
 
+    /**
+     * This constructor creates a DynamicallyShuffledBag with a provided initial capacity as well
+     * as a client-provided seed. Clients might be interested in reproducing experiments.
+     * @since 1.0
+     */
+    public DynamicallyShuffledBag(int capacity, long seed){
+        storage = (Item[])(new Object[capacity]);
+        r = new Random(seed);
+    }
 
-    public DynamicallyShuffledBag
+    /**
+     * This constructor creates a DynamicallyShuffledBag with a provided seed for experiment
+     * reproducibility.
+     * @see #DynamicallyShuffledBag(int, long)
+     * @since 1.0
+     */
+    public DynamicallyShuffledBag(long seed){
+        this(DEFAULT_INIT_CAPACITY, seed);
+    }
+
+    /**
+     * This constructor creates a DynamicallyShuffledBag with the provided default capacity. The bag shakes
+     * fully (pseudo-)randomly.
+     * @see {@link #DynamicallyShuffledBag(int)}
+     * @since 1.0
+     */
+    public DynamicallyShuffledBag(int capacity){
+        storage = (Item[])(new Object[capacity]);
+        r = new Random();
+    }
     /**
      * Adds an <b>Item</b> to the bag.
      *
@@ -34,7 +65,22 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      */
     @Override
     public void add(Item i) {
+        if (size() == capacity())
+            expand();
+        storage[++current] = i;
 
+    }
+
+    private void expand(){
+        int currCap = capacity();
+        Item[] newStorage = (Item[])new Object[2*currCap];
+        for(int i = 0; i < currCap; i++)
+            newStorage[i] = storage[i];
+        storage = newStorage;
+    }
+
+    private int capacity(){
+        return storage.length;
     }
 
     /**
@@ -45,17 +91,20 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     /**
      * "Shakes" the bag, randomly perturbing the order of its elements.
-     *
+     * @implNote This {@link Bag} randomly permutes the elements of the existing bag and exposes a classic linear
+     * indexing over the new permuted elements. So it "eats" the cost of permuting the entire collection of elements,
+     * but accessing them later should not lead to cache misses.
+     * @see {@link RandomAccessBag#shake()}
      * @since 1.0
      */
     @Override
     public void shake() {
-
+        Collections.shuffle(Arrays.asList(storage), r); // TODO: see this if you have problems: http://stackoverflow.com/questions/3981420/why-does-collections-shuffle-fail-for-my-array
     }
 
     /**
@@ -65,7 +114,7 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      */
     @Override
     public int size() {
-        return 0;
+        return current + 1;
     }
 
     /**
@@ -75,6 +124,20 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      */
     @Override
     public Iterator<Item> iterator() {
-        return null;
+        return new Iterator<Item>() {
+            private int index = -1;
+            private int initSize = size();
+            @Override
+            public boolean hasNext() {
+                return index < current;
+            }
+
+            @Override
+            public Item next() {
+                if(size() != initSize)
+                    throw new ConcurrentModificationException("StaticallyPerturbedBag was mutated between calls to iterator().next().");
+                return storage[++index];
+            }
+        };
     }
 }

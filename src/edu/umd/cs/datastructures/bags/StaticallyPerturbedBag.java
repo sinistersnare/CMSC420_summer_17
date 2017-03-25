@@ -7,6 +7,8 @@ import java.util.Iterator;
  * A StaticallyPerturbedBag is a bag where shaking perturbs the elements in a pre-defined way. For this example, the way
  * will be (index + offset) MOD length.
  * @implNote The class uses a static array for storing of <b>Item</b>s.
+ * @see DynamicallyShuffledBag
+ * @see RandomAccessBag
  * @author jason
  * @version 1.0
  */
@@ -33,8 +35,13 @@ public class StaticallyPerturbedBag<Item> implements Bag{
 
     // Let's not spend time on equals(), extended hashcode(), copy constructors...
 
+    /** Adds an <b>Item</b> to the bag.
+     *@param i The <b>Item</b> to add to the Bag.
+     *@since 1.0
+     */
+    @Override
     public void add(Object o) {
-        if(current == capacity())
+        if(size() == capacity())
             expand();
         storage[++current] = (Item)o;
     }
@@ -52,16 +59,25 @@ public class StaticallyPerturbedBag<Item> implements Bag{
         return storage.length;
     }
 
-
+    /**Returns true if there are no elements in the bag.
+     * @return True if and only if the Bag is empty, False otherwise.
+     * @since 1.0
+     */
+    @Override
     public boolean isEmpty() {
-        return current == -1;
+        return size() == 0;
     }
 
 
-    /* And here's where the meat of it all is. This particular bag will take any element and move it from position i
-        to position (i+OFFSET)%Length. This shouldn't cause many cash misses for the new array, except for those times
-         where we need to wrap around the last cell in the new array. Eh, can't do much better than this.
+    /**
+     * "Shakes" the bag, randomly perturbing the order of its elements.
+     * @implNote This particular bag will take any element and move it from position i
+     * to position (i+OFFSET)%Length. This shouldn't cause many cache misses for the new array, except for those times
+     * where we need to wrap around the last cell in the new array.
+     * @since 1.0
      */
+
+    @Override
     public void shake() {
         int sz = size();
         Item[] newStorage = (Item[])(new Object[sz]);
@@ -82,9 +98,9 @@ public class StaticallyPerturbedBag<Item> implements Bag{
     }
 
 
+    @Override
     public Iterator iterator() {
         return new Iterator() {
-
             private int index = -1;
             private int initSize = size();
             @Override
@@ -93,7 +109,7 @@ public class StaticallyPerturbedBag<Item> implements Bag{
             }
 
             @Override
-            public Object next() {
+            public Item next() {
                 if(size() != initSize)
                     throw new ConcurrentModificationException("StaticallyPerturbedBag was mutated between calls to iterator().next().");
                 return storage[++index];
