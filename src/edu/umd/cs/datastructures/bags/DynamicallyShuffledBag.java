@@ -12,14 +12,18 @@ import java.util.Random;
 public class DynamicallyShuffledBag<Item> implements Bag<Item>{
 
     private Random r;
-    private int DEFAULT_CAPACITY = 100;
-
+    private int DEFAULT_INIT_CAPACITY = 100;
+    private Item
     /**
-     * This constructor is used to
+     * This constructor is used to initialize the bag with full pseudorandom capabilities for shaking
+     * and the default starting capacity.
+     * @since 1.0
      */
     public DynamicallyShuffledBag() {
 
     }
+
+
 
     public DynamicallyShuffledBag
     /**
