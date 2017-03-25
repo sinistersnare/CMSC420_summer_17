@@ -1,12 +1,27 @@
 package edu.umd.cs.datastructures.bags;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
+ * A DynamicallyShuffledBag is a {@link Bag} which, very much like a {@link RandomAccessBag}, shakes its contents
+ * completely (pseudo-) randomly. However, it does so by storing the elements in their new order, instead of
+ * indexing into the old container with a permuted index set.
  * Created by jason on 3/22/17.
  */
 public class DynamicallyShuffledBag<Item> implements Bag<Item>{
 
+    private Random r;
+    private int DEFAULT_CAPACITY = 100;
+
+    /**
+     * This constructor is used to
+     */
+    public DynamicallyShuffledBag() {
+
+    }
+
+    public DynamicallyShuffledBag
     /**
      * Adds an <b>Item</b> to the bag.
      *
@@ -37,6 +52,16 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
     @Override
     public void shake() {
 
+    }
+
+    /**
+     * Returns the number of elements in the bag.
+     *
+     * @since 1.0
+     */
+    @Override
+    public int size() {
+        return 0;
     }
 
     /**

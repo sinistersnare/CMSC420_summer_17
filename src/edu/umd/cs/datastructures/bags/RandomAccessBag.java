@@ -39,6 +39,16 @@ public class RandomAccessBag<Item> implements Bag<Item>{
     }
 
     /**
+     * Returns the number of elements in the bag.
+     *
+     * @since 1.0
+     */
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    /**
      * Returns an iterator over elements of type {@code T}.
      *
      * @return an Iterator.
