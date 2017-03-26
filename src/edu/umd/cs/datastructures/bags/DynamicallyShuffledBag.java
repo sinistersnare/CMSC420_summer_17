@@ -104,7 +104,10 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      */
     @Override
     public void shake() {
-        Collections.shuffle(Arrays.asList(storage), r); // TODO: see this if you have problems: http://stackoverflow.com/questions/3981420/why-does-collections-shuffle-fail-for-my-array
+        // TODO: Debug this, as it shuffles null values as well.
+        Item[] items = Arrays.copyOfRange(storage, 0, current + 1);
+        Collections.shuffle(Arrays.asList(items), r); // TODO: see this if you have problems: http://stackoverflow.com/questions/3981420/why-does-collections-shuffle-fail-for-my-array
+        System.arraycopy(items, 0, storage, 0, items.length);
     }
 
     /**

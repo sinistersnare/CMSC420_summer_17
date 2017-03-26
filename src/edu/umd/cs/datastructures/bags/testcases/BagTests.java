@@ -4,6 +4,8 @@ import edu.umd.cs.datastructures.bags.Bag;
 import edu.umd.cs.datastructures.bags.DynamicallyShuffledBag;
 import edu.umd.cs.datastructures.bags.RandomAccessBag;
 import edu.umd.cs.datastructures.bags.StaticallyPerturbedBag;
+import org.junit.After;
+import org.junit.Before;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -20,10 +22,12 @@ public class BagTests {
     private Bag<Integer> staticBag, randomAccessBag, shuffledBag;
     private Integer[] thousand;
     private Integer[] tenthousand;
-    private static int NUM_ITERS=100000;
+    private static int NUM_ITERS=10;
     private Random r;
+    private static long DEFAULT_SEED=47;
 
     @org.junit.Test
+    @Before
     public void setUp() throws Exception {
         staticBag = new StaticallyPerturbedBag<Integer>();
         randomAccessBag = new RandomAccessBag<Integer>();
@@ -42,10 +46,11 @@ public class BagTests {
         }
 
         r = new Random();
-        r.setSeed(47); // Comment out for actual pseudorandomness
+        r.setSeed(DEFAULT_SEED); // Comment out for actual pseudorandomness
     }
 
     @org.junit.Test
+    @After
     public void tearDown() throws Exception {
         staticBag = randomAccessBag = shuffledBag = null;
         thousand = tenthousand = null;
@@ -94,6 +99,10 @@ public class BagTests {
         assertTrue("Statically Perturbed Bag should should have a size of 0.", staticBag.size() == 0);
         assertTrue("Dynamically Shuffled Bag should should have a size of 0.", shuffledBag.size() == 0);
         assertTrue("Random Access Bag should should have a size of 0.", randomAccessBag.size() == 0);
+
+        staticBag.add(r.nextInt());
+        shuffledBag.add(r.nextInt());
+        randomAccessBag.add(r.nextInt());
     }
 
     @org.junit.Test
@@ -102,7 +111,7 @@ public class BagTests {
         // Let's start with those.
 
         for(int i = 0; i < NUM_ITERS; i++){
-            for(int j = 0; j < 3000; j++){
+            for(int j = 0; j < 300; j++){
                 staticBag.add(j);
                 try {
                     staticBag.shake();
@@ -208,7 +217,7 @@ public class BagTests {
                 it.next();
             } catch (Exception e) {
                 System.err.println("iteratorOk method: received an " + e.getClass() + " with message " +
-                        e.getMessage() + " while accessing next() on Iterator."); //TODO: Look up how IntelliJ gives you information on stderr.
+                        e.getMessage() + " while accessing next() on Iterator.");
                 return false;
             }
         }

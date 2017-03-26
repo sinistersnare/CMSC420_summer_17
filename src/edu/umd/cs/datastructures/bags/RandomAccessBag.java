@@ -112,17 +112,20 @@ public class RandomAccessBag<Item> implements Bag<Item>{
     public Iterator<Item> iterator() {
         return new Iterator<Item>() {
             private int initSize = size();
-            private int indexIntoIndices = -1;
+            private int itIndex = -1;
             @Override
             public boolean hasNext() {
-                return indexIntoIndices < current;
+                return itIndex < current;
             }
 
             @Override
             public Item next() {
                 if(size() != initSize)
                     throw new ConcurrentModificationException("StaticallyPerturbedBag was mutated between calls to iterator().next().");
-                return storage[indexList[++indexIntoIndices]];
+                if(indexList != null) // Or, in other words, if the bag has been shaken
+                    return storage[indexList[++itIndex]];
+                else
+                    return storage[++itIndex];
             }
         };
     }
