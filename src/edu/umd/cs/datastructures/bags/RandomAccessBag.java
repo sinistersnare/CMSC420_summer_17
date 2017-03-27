@@ -129,4 +129,9 @@ public class RandomAccessBag<Item> implements Bag<Item>{
             }
         };
     }
+
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName();
+    }
 }

@@ -41,4 +41,11 @@ public interface Bag<Item> extends Iterable<Item>{ // So classes implementing it
      */
     int size();
 
+    /**
+     * <b>Bag</b>s are to override the default toString() so that they can identify themselves.
+     * @since 1.1
+     */
+    @Override
+   String toString();
+
 }

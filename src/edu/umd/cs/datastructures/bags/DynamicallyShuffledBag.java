@@ -143,4 +143,9 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
             }
         };
     }
+
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName();
+    }
 }

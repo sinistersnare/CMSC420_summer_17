@@ -116,4 +116,9 @@ public class StaticallyPerturbedBag<Item> implements Bag{
             }
         };
     }
+
+    @Override
+    public String toString(){
+        return this.getClass().getSimpleName();
+    }
 }
