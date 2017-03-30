@@ -128,9 +128,9 @@ public class BagTests {
                     fail("While adding integer " + j + " to staticBag, we received an " + e.getClass() + " with message " + e.getMessage());
                 }
 
-                staticBag.add(j);
+                shuffledBag.add(j);
                 try {
-                    staticBag.shake();
+                    shuffledBag.shake();
                 } catch(Exception e){
                     fail("While adding integer " + j + " to staticBag, we received an " + e.getClass() + " with message " + e.getMessage());
                 }
