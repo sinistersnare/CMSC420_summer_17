@@ -1,0 +1,17 @@
+# Description
+
+This project contains the code I used for the bag demo in the first lecture of CMSC420 during the summer of 17. It was
+prepared using IntelliJ Ultimate, and latest commits were made with version 2017.1.3 and Oracle JDK 1.8.07.
+
+
+# Licensing
+
+Check included LICENSE file.
+
+# Known issues
+
+- MAC ClassLoader bug known in 2017 versions of IntelliJ. Execution unaffected, but red output indicating errors can be seen in Terminal.
+
+- add() unit test succeeds, but right before termination 4 IllegalStateExceptions are thrown.
+
+- Javadoc contains some tags that might not be supported.
