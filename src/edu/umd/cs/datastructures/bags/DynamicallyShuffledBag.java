@@ -60,7 +60,7 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
     /**
      * Adds an <b>Item</b> to the bag.
      *
-     * @param i The <b>Item</b> to add to the Bag.
+     * //@param i The <b>Item</b> to add to the Bag.
      * @since 1.0
      */
     @Override

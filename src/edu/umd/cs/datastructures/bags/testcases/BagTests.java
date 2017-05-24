@@ -10,8 +10,10 @@ import org.junit.Before;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -19,6 +21,7 @@ import static org.junit.Assert.fail;
  * Created by jason on 3/22/17.
  */
 public class BagTests {
+
 
     private Bag<Integer> staticBag, randomAccessBag, shuffledBag;
     private IntStream thousand;
@@ -80,7 +83,7 @@ public class BagTests {
         try {
             ints.forEach(l -> b.add(l));
         } catch(Exception e){
-            System.err.println("Caught an " + e.getClass().getSimpleName() _)
+            System.err.println("Caught an " + e.getClass().getSimpleName());
         }
 
     }
@@ -98,6 +101,16 @@ public class BagTests {
         staticBag.add(r.nextInt());
         shuffledBag.add(r.nextInt());
         randomAccessBag.add(r.nextInt());
+
+        // Make sure that after addition, you are no longer empty *and* your size is 1.
+
+        assertFalse("Statically Perturbed Bag should not be empty.", staticBag.isEmpty());
+        assertFalse("Dynamically Shuffled Bag should not be empty.", shuffledBag.isEmpty());
+        assertFalse("Random Access Bag should not be empty.", randomAccessBag.isEmpty());
+
+        assertTrue("Statically Perturbed Bag should should have a size of 1.", staticBag.size() == 1);
+        assertTrue("Dynamically Shuffled Bag should should have a size of 1.", shuffledBag.size() == 1);
+        assertTrue("Random Access Bag should should have a size of 1.", randomAccessBag.size() == 1);
     }
 
     @org.junit.Test
@@ -106,6 +119,14 @@ public class BagTests {
         // Let's start with those.
 
         for(int i = 0; i < NUM_ITERS; i++){
+            IntStream.rangeClosed(0, 300).forEach(new IntConsumer() {
+                @Override
+                public void accept(int value) {
+                    staticBag.add(value);
+                    shuffledBag.add(value);
+                    randomAccessBag.add(value);
+                }
+            });
             for(int j = 0; j < 300; j++){
                 staticBag.add(j);
                 try {
