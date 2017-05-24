@@ -10,8 +10,12 @@ import org.junit.Before;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Created by jason on 3/22/17.
@@ -19,8 +23,8 @@ import static org.junit.Assert.*;
 public class BagTests {
 
     private Bag<Integer> staticBag, randomAccessBag, shuffledBag;
-    private Integer[] thousand;
-    private Integer[] tenthousand;
+    private IntStream thousand;
+    private IntStream tenthousand;
     private static int NUM_ITERS=10;
     private Random r;
     private static long DEFAULT_SEED=47;
@@ -32,17 +36,10 @@ public class BagTests {
         randomAccessBag = new RandomAccessBag<Integer>();
         shuffledBag = new DynamicallyShuffledBag<Integer>();
 
-        // Fucking Java 7 won't give me an easy way to generate a list of Integers
-        //thousand = IntStream.range(0, 999).toArray();
-        //tenthousand = IntStream.range(0, 9999).toArray();
-        // Do it the goddamn stupid way but note this: http://stackoverflow.com/questions/16020741/shortest-way-of-filling-an-array-with-1-2-n
-        thousand = new Integer[1000];
-        tenthousand = new Integer[10000];
-        for(int i = 0; i < 10000; i++){
-            if(i < 1000)
-                thousand[i] = i + 1;
-            tenthousand[i] = i+1;
-        }
+
+        thousand = IntStream.rangeClosed(1, 1000);
+        tenthousand = IntStream.rangeClosed(1, 10000);
+
 
         r = new Random();
         r.setSeed(DEFAULT_SEED); // Comment out for actual pseudorandomness
@@ -79,14 +76,15 @@ public class BagTests {
     }
 
 
-    private void testAdditions(Integer[] ints, Bag b){
-        for (Integer i : ints)
-            try {
-                b.add(i);
-            } catch (Exception e) {
-                System.err.println("testAdditions subroutine caught an exception for integer " + i + ".");
-                throw (e);
-            }
+    // If you're gonna stream the additions, gotta make the Bag's inner implementation
+    // thread-safe, and declare as such in the documentation.
+    private void testAdditions(IntStream ints, Bag b){
+        try {
+            ints.forEach(l -> b.add(l));
+        } catch(Exception e){
+            System.err.println("Caught an " + e.getClass().getSimpleName());
+        }
+
     }
 
     @org.junit.Test
@@ -120,6 +118,14 @@ public class BagTests {
         // Let's start with those.
 
         for(int i = 0; i < NUM_ITERS; i++){
+            IntStream.rangeClosed(0, 300).forEach(new IntConsumer() {
+                @Override
+                public void accept(int value) {
+                    staticBag.add(value);
+                    shuffledBag.add(value);
+                    randomAccessBag.add(value);
+                }
+            });
             for(int j = 0; j < 300; j++){
                 staticBag.add(j);
                 try {
@@ -128,9 +134,9 @@ public class BagTests {
                     fail("While adding integer " + j + " to staticBag, we received an " + e.getClass() + " with message " + e.getMessage());
                 }
 
-                shuffledBag.add(j);
+                staticBag.add(j);
                 try {
-                    shuffledBag.shake();
+                    staticBag.shake();
                 } catch(Exception e){
                     fail("While adding integer " + j + " to staticBag, we received an " + e.getClass() + " with message " + e.getMessage());
                 }
