@@ -22,14 +22,14 @@ public class MajorOrderTest {
     public static void main(String[] args){
 
         double[][] M = randomMatrix(N);
-        sumThrowDimension(M, ROWS);
-        sumThrowDimension(M, COLUMNS);
+        sumThroughDimension(M, ROWS);
+        sumThroughDimension(M, COLUMNS);
         System.out.println("Good - bye!");
     }
 
     /* *********** Some helper functions to make main() cleaner: ***************** */
 
-    private static void  sumThrowDimension(double[][] matrix, Dimension d){
+    private static void  sumThroughDimension(double[][] matrix, Dimension d){
         if(matrix == null || matrix.length == 0)
             throw new IllegalArgumentException("method MajorOrderTest.sumThroughDimension: invalid matrix given");
         double sum = 0.0, begin = System.currentTimeMillis();
