@@ -32,12 +32,13 @@ public class MajorOrderTest {
     private static void  sumThrowDimension(double[][] matrix, Dimension d){
         if(matrix == null || matrix.length == 0)
             throw new IllegalArgumentException("method MajorOrderTest.sumThroughDimension: invalid matrix given");
-        long sum = 0, begin = System.currentTimeMillis();
+        double sum = 0.0, begin = System.currentTimeMillis();
         for(int i = 0; i < matrix.length; i++)
             for(int j = 0; j < matrix[i].length; j++) // Safe access
-                sum += (d.equals(ROWS) ?  matrix[i][j] : matrix[j][i]);
+                sum += d.equals(ROWS) ?  matrix[i][j] : matrix[j][i];
         long end = System.currentTimeMillis();
         System.out.println("Summed along dimension " + d + " in " + (end - begin) + " ms.");
+        System.out.println("Sum computed: " + sum);
     }
 
     private static double[][] randomMatrix(int dim){
