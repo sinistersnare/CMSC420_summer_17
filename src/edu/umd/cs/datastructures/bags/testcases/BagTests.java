@@ -57,9 +57,11 @@ public class BagTests {
     @org.junit.Test
     public void add() throws Exception {
         try {
-
+        	
             testAdditions(thousand, staticBag);
+            thousand = IntStream.rangeClosed(1, 1000);
             testAdditions(thousand, shuffledBag);
+            thousand = IntStream.rangeClosed(1, 1000);
             testAdditions(thousand, randomAccessBag);
 
             // Clear and reset the bags pretty quick
@@ -67,7 +69,9 @@ public class BagTests {
             setUp();
 
             testAdditions(tenthousand, staticBag);
+            tenthousand = IntStream.rangeClosed(1, 10000);
             testAdditions(tenthousand, shuffledBag);
+            tenthousand = IntStream.rangeClosed(1, 10000);
             testAdditions(tenthousand, randomAccessBag);
         }
         catch(Exception e){
