@@ -57,7 +57,6 @@ public class BagTests {
     @org.junit.Test
     public void add() throws Exception {
         try {
-        	
             testAdditions(thousand, staticBag);
             thousand = IntStream.rangeClosed(1, 1000);
             testAdditions(thousand, shuffledBag);
@@ -88,7 +87,6 @@ public class BagTests {
         } catch(Exception e){
             System.err.println("Caught an " + e.getClass().getSimpleName());
         }
-
     }
 
     @org.junit.Test
