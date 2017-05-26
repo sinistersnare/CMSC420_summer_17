@@ -10,7 +10,7 @@ Check included LICENSE file.
 
 **Bag demo:**
 
-- MAC ClassLoader bug known in 2017 versions of IntelliJ. Execution unaffected, but red output indicating errors can be seen in Terminal.
+- Mac bug in JavaLaunchHelper known in 2017 versions of IntelliJ. Execution unaffected, but red output indicating errors can be seen in Terminal.
 
 - Javadoc contains some tags that might not be supported.
 

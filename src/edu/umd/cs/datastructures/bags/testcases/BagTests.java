@@ -58,7 +58,7 @@ public class BagTests {
     public void add() throws Exception {
         try {
             testAdditions(thousand, staticBag);
-            thousand = IntStream.rangeClosed(1, 1000);
+            thousand = IntStream.rangeClosed(1, 1000); // Can't reuse Streams :(
             testAdditions(thousand, shuffledBag);
             thousand = IntStream.rangeClosed(1, 1000);
             testAdditions(thousand, randomAccessBag);
