@@ -57,9 +57,10 @@ public class BagTests {
     @org.junit.Test
     public void add() throws Exception {
         try {
-
             testAdditions(thousand, staticBag);
+            thousand = IntStream.rangeClosed(1, 1000); // Can't reuse Streams :(
             testAdditions(thousand, shuffledBag);
+            thousand = IntStream.rangeClosed(1, 1000);
             testAdditions(thousand, randomAccessBag);
 
             // Clear and reset the bags pretty quick
@@ -67,7 +68,9 @@ public class BagTests {
             setUp();
 
             testAdditions(tenthousand, staticBag);
+            tenthousand = IntStream.rangeClosed(1, 10000);
             testAdditions(tenthousand, shuffledBag);
+            tenthousand = IntStream.rangeClosed(1, 10000);
             testAdditions(tenthousand, randomAccessBag);
         }
         catch(Exception e){
@@ -84,7 +87,6 @@ public class BagTests {
         } catch(Exception e){
             System.err.println("Caught an " + e.getClass().getSimpleName());
         }
-
     }
 
     @org.junit.Test
