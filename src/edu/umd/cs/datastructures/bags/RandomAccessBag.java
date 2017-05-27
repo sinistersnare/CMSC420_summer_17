@@ -76,11 +76,11 @@ public class RandomAccessBag<Item> implements Bag<Item>{
     }
 
     /**
-     * "Shakes" the bag, randomly perturbing the order of its elements.
-     * @implNote The shaking routine for a <b>RandomAccessBag</b> will generate the list of indices into the existing
+     * <p>"Shakes" the bag, randomly perturbing the order of its elements.</p>
+     * <p>The shaking routine for a <b>RandomAccessBag</b> will generate the list of indices into the existing
      * array. randomly permute that index list, and then use the permuted indices to access the existing list.
      * The hope is that this will lead to lots of cache misses. It is also burdened by the generation of original index list
-     * as well as the permutation of its elements. Check the Java 8 branch for various optimizations for array handling.
+     * as well as the permutation of its elements. Check the Java 8 branch for various optimizations for array handling.</p>
      * @see DynamicallyShuffledBag#shake()
      * @since 1.0
      */

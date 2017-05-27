@@ -8,7 +8,8 @@ public class Ball {
 
     private Color color;
 
-    /**
+    /** Simple constructor
+     * @param color The color of the ball
      * @since 1.1
      */
     public Ball(Color color){

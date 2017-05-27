@@ -30,6 +30,8 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
     /**
      * This constructor creates a DynamicallyShuffledBag with a provided initial capacity as well
      * as a client-provided seed. Clients might be interested in reproducing experiments.
+     * @param capacity The initial capacity of the <tt>Bag</tt>.
+     * @param seed A caller-provided seed for the random number generator.
      * @since 1.0
      */
     public DynamicallyShuffledBag(int capacity, long seed){
@@ -41,6 +43,7 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
      * This constructor creates a DynamicallyShuffledBag with a provided seed for experiment
      * reproducibility.
      * @see #DynamicallyShuffledBag(int, long)
+     * @param seed A caller-provided seed for the random number generator.
      * @since 1.0
      */
     public DynamicallyShuffledBag(long seed){
@@ -50,7 +53,8 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
     /**
      * This constructor creates a DynamicallyShuffledBag with the provided default capacity. The bag shakes
      * fully (pseudo-)randomly.
-     * @see {@link #DynamicallyShuffledBag(int)}
+     * @param capacity  The initial capacity for the <tt>Bag</tt>.
+     * @see #DynamicallyShuffledBag(int)
      * @since 1.0
      */
     public DynamicallyShuffledBag(int capacity){
@@ -95,11 +99,11 @@ public class DynamicallyShuffledBag<Item> implements Bag<Item>{
     }
 
     /**
-     * "Shakes" the bag, randomly perturbing the order of its elements.
-     * @implNote This {@link Bag} randomly permutes the elements of the existing bag and exposes a classic linear
+     * <p>"Shakes" the bag, randomly perturbing the order of its elements. </p>
+     * <p>This {@link Bag} randomly permutes the elements of the existing bag and exposes a classic linear
      * indexing over the new permuted elements. So it "eats" the cost of permuting the entire collection of elements,
-     * but accessing them later should not lead to cache misses.
-     * @see {@link RandomAccessBag#shake()}
+     * but accessing them later should not lead to cache misses. </p>
+     * @see RandomAccessBag#shake()
      * @since 1.0
      */
     @Override

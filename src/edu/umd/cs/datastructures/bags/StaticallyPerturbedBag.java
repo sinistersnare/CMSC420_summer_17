@@ -4,9 +4,9 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /**
- * A StaticallyPerturbedBag is a bag where shaking perturbs the elements in a pre-defined way. For this example, the way
- * will be (index + offset) MOD length.
- * @implNote The class uses a static array for storing of <b>Item</b>s.
+ * <p>A StaticallyPerturbedBag is a bag where shaking perturbs the elements in a pre-defined way. For this example, the way
+ * will be (index + offset) MOD length.</p>
+ * <p> The class uses a static array for storing of <b>Item</b>s. </p>
  * @see DynamicallyShuffledBag
  * @see RandomAccessBag
  * @author jason
@@ -36,7 +36,7 @@ public class StaticallyPerturbedBag<Item> implements Bag{
     // Let's not spend time on equals(), extended hashcode(), copy constructors...
 
     /** Adds an <b>Item</b> to the bag.
-     *@param i The <b>Item</b> to add to the Bag.
+     *@param o The <b>Item</b> to add to the Bag.
      *@since 1.0
      */
     @Override
@@ -70,10 +70,10 @@ public class StaticallyPerturbedBag<Item> implements Bag{
 
 
     /**
-     * "Shakes" the bag, randomly perturbing the order of its elements.
-     * @implNote This particular bag will take any element and move it from position i
+     * <p>"Shakes" the bag, randomly perturbing the order of its elements.</p>
+     * <p>This particular bag will take any element and move it from position i
      * to position (i+OFFSET)%Length. This shouldn't cause many cache misses for the new array, except for those times
-     * where we need to wrap around the last cell in the new array.
+     * where we need to wrap around the last cell in the new array.</p>
      * @since 1.0
      */
 

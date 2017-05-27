@@ -1,0 +1,14 @@
+##TODOs
+
+We will be writing some goals for both the classroom as well as further implementations here (in the absence of a formal issue tracker). Every version of this file will be branch-specific.
+
+####Points for students
+
+- Ask the students why the pointer check in the custom stack traversal is required.
+- Point out to the students what an advanced IDE can do for them (IntelliJ realizes that invariant cannot be violated and reports as such in custom stack traversal).
+
+#### Code 
+
+- Need to implement a timing client for different inorder traversals.
+
+- Recursive list traversal vs custom stack - based traversal: compare through a timing and heap-checking client.

@@ -1,0 +1,12 @@
+##Issues
+
+This file will collect issues that have still been unsolved in the relevant branch. They may range
+from incomplete implementations to platform-specific issues and from buggy implementations to once-in-a-blue-moon thread deadlocks.
+
+####Bag Demo
+
+- Mac bug in JavaLaunchHelper known in 2017 versions of IntelliJ. Execution unaffected, but red output indicating errors can be seen in Terminal.
+
+####MATLAB demo on matrix storage:
+
+- For large arrays, might need to tweak the maximum array size through MATLAB's preferences (check source code comments)

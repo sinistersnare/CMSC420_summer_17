@@ -3,7 +3,7 @@ package edu.umd.cs.datastructures.matrices.java;
 import java.util.Random;
 import static edu.umd.cs.datastructures.matrices.java.Dimension.*;
 
-/**<p></p><tt>MajorOrderTest</tt> is a simple app that tests the efficiency of performing operations across rows and columns in Java.</p>
+/**<p><tt>MajorOrderTest</tt> is a simple app that tests the efficiency of performing operations across rows and columns in Java.</p>
  * @author Jason
  */
 public class MajorOrderTest {

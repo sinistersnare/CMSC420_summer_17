@@ -37,6 +37,7 @@ public interface Bag<Item> extends Iterable<Item>{ // So classes implementing it
 
     /**
      * Returns the number of elements in the bag.
+     * @return the number of elements contained in this bag.
      * @since 1.0
      */
     int size();

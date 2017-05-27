@@ -1,1 +1,5 @@
 edu.umd.cs.datastructures.bags
+edu.umd.cs.datastructures.bags.clients
+edu.umd.cs.datastructures.bags.testcases
+edu.umd.cs.datastructures.matrices.java
+edu.umd.cs.datastructures.traversals
