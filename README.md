@@ -1,8 +1,8 @@
-##Description
+## Description
 
 This repository contains code demos and project skeleton code for the students of [**CMSC420**](https://myelms.umd.edu/courses/1224922).
 
-##Licensing
+## Licensing
 
 Check included LICENSE file.
 
