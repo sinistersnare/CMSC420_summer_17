@@ -40,6 +40,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
          * to have nothing in your constructor. That is, the only thing you'd need to do
          * here is erase the application of throw() above. Your code, your choice ! */
     }
+
 	/**
 	 * Insert <tt>key</tt> in the tree.
 	 * @param key The key to insert in the tree.
@@ -52,7 +53,8 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	}
 
 	/**
-	 * Delete the key from the data structure and return it to the caller.
+	 * Delete the key from the data structure and return it to the caller. Note that it is assumed that there are no
+     * duplicate keys in the tree. That is, if a key is deleted from the tree, it should no longer be found in it.
 	 * @param key The key to delete from the structure.
 	 * @return The key that was removed, or <tt>null</tt> if the key was not found.
 	 */
