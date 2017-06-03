@@ -46,44 +46,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 			return rightHeight - leftHeight;
 		}
 
-		/**
-		 * Returns true if the tree is unoptimally right heavy. If the
-		 * balanceFactor is < 2, it is optimally right heavy.
-		 */
-		public boolean isRightHeavy() {
-			return this.getBalanceFactor() >= 2;
-		}
-
-		/**
-		 * Returns true if the tree is unoptimally left heavy. If the
-		 * balanceFactor is > -2, it is optimally left heavy.
-		 */
-		public boolean isLeftHeavy() {
-			return this.getBalanceFactor() <= -2;
-		}
-
-		public void rotateLeft() {
-			Node temp = this.right;
-			this.right = temp.left;
-			temp.left = this;
-		}
-
-		public void rotateLR() {
-			this.left.rotateLeft();
-			this.rotateRight();
-		}
-
-		public void rotateRight() {
-			Node temp = this.left;
-			this.left = temp.right;
-			temp.right = this;
-		}
-
-		public void rotateRL() {
-			this.right.rotateRight();
-			this.rotateLeft();
-		}
-
 		public int height() {
 			int leftHeight = 0, rightHeight = 0;
 			if (this.left != null) {
@@ -141,14 +103,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	public ThreadedAVLTree() {
 	}
 
-<<<<<<< Updated upstream
-        /* Jason's Note: Depending on how you handle things. it might be completely ok
-         * to have nothing in your constructor. That is, the only thing you'd need to do
-         * here is erase the application of throw() above. Your code, your choice ! */
-    }
-
-=======
->>>>>>> Stashed changes
 	/**
 	 * Insert <tt>key</tt> in the tree.
 	 * 
@@ -161,7 +115,21 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 			throw new IllegalArgumentException("No null keys!");
 		}
 		this.root = insert(key, this.root);
-		this.rotateCheck(this.root);
+		this.root = this.rebalance(this.root);
+	}
+
+	public Node rotateRight(Node cur) {
+		Node temp = cur.left;
+		cur.left = temp.right;
+		temp.right = cur;
+		return temp;
+	}
+
+	public Node rotateLeft(Node cur) {
+		Node temp = cur.right;
+		cur.right = temp.left;
+		temp.left = cur;
+		return temp;
 	}
 
 	public Node insert(T key, Node cur) {
@@ -173,43 +141,41 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		} else if (cur.compareTo(key) < 0) {
 			cur.right = insert(key, cur.right);
 		}
-		this.rotateCheck(cur);
+		cur = this.rebalance(cur);
 		return cur;
 	}
 
-	private void rotateCheck(Node cur) {
+	private Node rebalance(Node cur) {
 		// possible rotations if tree becomes unbalanced.
 		if (cur.getBalanceFactor() > 1) { // if right heavy
 			if (cur.right.getBalanceFactor() < -1) {
 				// if right subtree is left heavy
-				cur.rotateLR(); // LR/double-left rotation
+				cur.left = rotateLeft(cur.left); // LR/double-left rotation
+				cur = rotateRight(cur);
 			} else {
-				cur.rotateLeft(); // Left rotation
+				cur = rotateLeft(cur); // Left rotation
 			}
 		} else if (cur.getBalanceFactor() < -1) { // if left heavy
 			if (cur.left.getBalanceFactor() > 1) {
 				// if left subtree is right heavy
-				cur.rotateRL(); // RL/double-right rotation
+				cur.right = rotateRight(cur.right); // RL/double-right rotation
+				cur = rotateLeft(cur);
 			} else {
-				cur.rotateRight(); // Right rotation
+				cur = rotateRight(cur); // Right rotation
 			}
 		}
+		return cur;
 	}
 
 	/**
-<<<<<<< Updated upstream
-	 * Delete the key from the data structure and return it to the caller. Note that it is assumed that there are no
-     * duplicate keys in the tree. That is, if a key is deleted from the tree, it should no longer be found in it.
-	 * @param key The key to delete from the structure.
-	 * @return The key that was removed, or <tt>null</tt> if the key was not found.
-=======
-	 * Delete the key from the data structure and return it to the caller.
+	 * Delete the key from the data structure and return it to the caller. Note
+	 * that it is assumed that there are no duplicate keys in the tree. That is,
+	 * if a key is deleted from the tree, it should no longer be found in it.
 	 * 
 	 * @param key
 	 *            The key to delete from the structure.
 	 * @return The key that was removed, or <tt>null</tt> if the key was not
 	 *         found.
->>>>>>> Stashed changes
 	 */
 	public T delete(T key) {
 		// TODO this is a standard BST delete.
@@ -244,6 +210,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 				cur.right = deleteAux(succ.data, cur.right);
 			}
 		}
+		rebalance(cur);
 		return cur;
 	}
 
