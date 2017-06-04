@@ -20,6 +20,7 @@ public class BinarySearchTreeTest {
 
     private BinarySearchTree<Integer> tree;
     private Random r;
+    private static long SEED = 47;
     private static int NUM_INTS = 1000;
     private IntStream ints;
 
@@ -27,7 +28,7 @@ public class BinarySearchTreeTest {
     public void setUp() throws Exception {
         tree = new BinarySearchTree<Integer>();
         ints = IntStream.range(0, NUM_INTS);
-        r = new Random();
+        r = new Random(SEED);
     }
 
     @After
@@ -95,6 +96,16 @@ public class BinarySearchTreeTest {
     public void getCount() throws Exception {
         assertTrue(tree.getCount() == 0);
         assertFalse(tree.getCount() != 0);
+    }
+
+    @Test
+    public void search() throws Exception{
+        List<Integer> myInts =IntStream.range(0, NUM_INTS).boxed().collect(Collectors.toList());
+        Collections.shuffle(myInts, r);
+        for(Integer i: myInts)
+            tree.insert(i);
+        for(Integer i: myInts)
+            assertEquals("When searching the tree for the key " + i + ", we instead received a " + tree.search(i), i, tree.search(i)); // I don't care enough that I search twice for just an assertion.
     }
 
 }

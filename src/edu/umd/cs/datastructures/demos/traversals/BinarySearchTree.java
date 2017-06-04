@@ -103,4 +103,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return count;
     }
 
+    /**
+     * Search for <tt>key</tt> in the binary search tree. Non-recursive.
+     * @param key The key to search for in the tree.
+     * @return <tt>key</tt>, if it is found, <tt>null</tt> otherwise.
+     */
+    public T search(T key){
+        Node curr = root;
+        while(curr != null){
+            if(curr.value.compareTo(key) == 0)
+                return key;
+            else if(curr.value.compareTo(key) > 0)
+                curr = curr.left;
+            else
+                curr = curr.right;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     */
+    public void delete(T key){
+
+    }
 }
