@@ -10,3 +10,8 @@ from incomplete implementations to platform-specific issues and from buggy imple
 ####MATLAB demo on matrix storage:
 
 - For large arrays, might need to tweak the maximum array size through MATLAB's preferences (check source code comments)
+
+
+#### Splay Trees:
+
+- Have to debug the traversal methods.

@@ -1,6 +1,10 @@
 package edu.umd.cs.datastructures.demos.splaying;
 
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * <p>A <tt>SplayTree</tt> is a Binary Search Tree which strives to maintain
  * amortized logarithmic complexity. That is, the total cost of <em>m</em> insertions, deletions or searches
@@ -19,11 +23,11 @@ public class SplayTree<T extends Comparable<T>> {
 	   ****************************-*/
 
 	private class Node{
-		T data;
+		T key;
 		Node left, right;
 
-		Node(T data){
-			this.data = data;
+		Node(T key){
+			this.key = key;
 		}
 	}
 
@@ -37,14 +41,14 @@ public class SplayTree<T extends Comparable<T>> {
 	 * contains either the preceding or following key in the sorted key list ascends to the top of the tree.
 	 */
 	private Node splay(Node root, T key){
-		if(key.compareTo(root.data) < 0){
+		if(key.compareTo(root.key) < 0){
 			if(root.left == null)
 				return root; // The key is not in the tree; ascend its successor
 			else{
 				root.left = splay(root.left, key); // The key might be in the tree; keep looking.
 				return rotateRight(root); // Rotate the current root to the right to make the key ascend to the tree's root.
 			}
-		} else if(key.compareTo(root.data) > 0){
+		} else if(key.compareTo(root.key) > 0){
 			if(root.right == null)
 				return root;
 			else{
@@ -83,10 +87,11 @@ public class SplayTree<T extends Comparable<T>> {
 	   ****************-*/
 
 	/**
-	 *
+	 * Queries the tree for emptiness.
+	 * @return true if and only if the tree is empty.
 	 */
 	public boolean isEmpty(){
-		return (root == null);
+		return (count == 0);
 	}
 
 	/**
@@ -99,8 +104,8 @@ public class SplayTree<T extends Comparable<T>> {
 		if(isEmpty())
 			return null;
 		root = splay(root, key);
-		if(root.data.compareTo(key) == 0)
-			return root.data;
+		if(root.key.compareTo(key) == 0)
+			return root.key;
 		else
 			return null; // We splayed a neighbor of the key to the root.
 	}
@@ -116,7 +121,7 @@ public class SplayTree<T extends Comparable<T>> {
 		if(isEmpty())
 			return null;
 		root = splay(root, key);
-		if(root.data.compareTo(key) == 0){ // The key ascended is indeed the key to be deleted.
+		if(root.key.compareTo(key) == 0){ // The key ascended is indeed the key to be deleted.
 			if(root.left == null) // key was the smallest key in the tree already.
 				root = root.right; // Simply make the root point to its right child.
 			else{
@@ -142,7 +147,7 @@ public class SplayTree<T extends Comparable<T>> {
 		else{
 			root = splay(root, key);
 			Node oldRoot = root;
-			if(key.compareTo(root.data) < 0){ // The root contains the immediate successor of our key.
+			if(key.compareTo(root.key) < 0){ // The root contains the immediate successor of our key.
 				Node oldRootLeft = root.left;
 				root = new Node(key);
 				root.right = oldRoot;
@@ -158,4 +163,92 @@ public class SplayTree<T extends Comparable<T>> {
 		}
 		count++;
 	}
+
+	/**
+	 * Returns the number of nodes in the splay tree.
+	 * @return the number of nodes in the tree.
+	 */
+	public int getCount() {
+		return count;
+	}
+
+	/**
+	 * Returns the key at the root of the tree.
+	 * @return the key at the root of the tree or null if the tree is empty.
+	 */
+	public T getRoot(){
+		return (root != null) ? root.key : null;
+	}
+
+	/* Traversal methods ... Mainly put those here because my strong past tests depend on traversals as well.
+	*  I'm gonna do them recursively, since I only use them for testing anyway. In fact, to reflect this, I'll make them
+	*  package-private. I think one can configure how JavaDocs are printed for those, if one would want to add some JavaDoc in there. */
+
+	/**
+	 * Returns a {@link java.util.Iterator<T>}  over the keys of the tree, exposed in the manner of a <b>pre-order</b>
+	 * traversal of the tree.
+	 * @return A {@link java.util.Iterator<T>} over the keys of the tree, in preorder traversal.
+	 * @see #inOrder()
+	 * @see #postOrder()
+	 */
+	Iterator<T> preOrder(){
+		List<T> visited = new LinkedList<T>();
+		preOrder(root, visited)	;
+		return visited.iterator();
+	}
+
+	private void preOrder(Node curr, List<T> visited){
+		if(curr != null) {
+			visited.add(curr.key);
+			preOrder(curr.left, visited);
+			preOrder(curr.right, visited);
+		}
+	}
+
+	/**
+	 * Returns a {@link java.util.Iterator<T>}  over the keys of the tree, exposed in the manner of an <b>in-order</b>
+	 * traversal of the tree.
+	 * @return A {@link java.util.Iterator<T>} over the keys of the tree, in inorder traversal.
+	 * @see #preOrder()
+	 * @see #postOrder()
+	 */
+	Iterator<T> inOrder(){
+		List<T> visited = new LinkedList<T>();
+		inOrder(root, visited)	;
+		return visited.iterator();
+	}
+
+	private void inOrder(Node curr, List<T> visited){
+		if(curr != null) {
+			preOrder(curr.left, visited);
+			visited.add(curr.key);
+			preOrder(curr.right, visited);
+		}
+	}
+
+	/**
+	 * Returns a {@link java.util.Iterator<T>}  over the keys of the tree, exposed in the manner of a <b>post-order</b>
+	 * traversal of the tree.
+	 * @return A {@link java.util.Iterator<T>} over the keys of the tree, in postorder traversal.
+	 * @see #preOrder()
+	 * @see #inOrder()
+	 */
+	Iterator<T> postOrder(){
+		List<T> visited = new LinkedList<T>();
+		postOrder(root, visited)	;
+		return visited.iterator();
+
+	}
+
+	private void postOrder(Node curr, List<T> visited){
+		if(curr != null) {
+			preOrder(curr.left, visited);
+			preOrder(curr.right, visited);
+			visited.add(curr.key);
+		}
+	}
+
+
+
+
 }
