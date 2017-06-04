@@ -9,14 +9,22 @@ import java.util.Stack;
  */
 public class BinarySearchTree<T extends Comparable<T>> {
     class Node{
-        T value;
+        T key;
         Node left, right;
 
-        Node(T val){
+        Node(T key){
             left = right = null;
-            value = val;
+            this.key = key;
         }
 
+        // This will return the node's inorder successor in the tree.
+        Node inSucc(){
+            assert right != null; // Otherwise the caller is making the wrong application
+            Node curr = right;
+            while(curr.left != null)
+                curr = curr.left;
+            return curr;
+        }
     };
 
 
@@ -27,6 +35,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     /**
      * A recursive implementation of inorder traversal.
      * @param visited A <tt>List</tt> that will store the nodes as they are being visited.
+     * @see #inorderTraversalWithStack(List)
      */
     public void inorderTraversalRec(List<T> visited){
         inorderTraversalRec(root, visited);
@@ -36,13 +45,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if(n==null)
             return;
         inorderTraversalRec(n.left, visited);
-        visited.add(n.value);
+        visited.add(n.key);
         inorderTraversalRec(n.right, visited);
     }
 
     /**
      * A non-recursive implementation of inorder traversal, which uses a user-provided stack.
      * @param visited A <tt>List</tt> that will store the nodes as they are being visited.
+     * @see #inorderTraversalRec(List)
      */
     public void inorderTraversalWithStack(List<T> visited){
         Stack<Node> s = new Stack<Node>();
@@ -52,7 +62,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             // might be many levels above you!
             if(curr == null) {
                 curr = s.pop(); // Important: this is why the stack needs to be a stack of nodes, not just Ts!
-                visited.add(curr.value);
+                visited.add(curr.key);
                 curr = curr.right;
             // Otherwise, go as left as you can. This is inorder traversal, after all!
             } else {
@@ -64,11 +74,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     /**
      * Non-recursive insertion routine! Insertion doesn't even need a stack!
-     * @param element  The {@link java.lang.Comparable} element to add to the tree.
+     * @param key The {@link java.lang.Comparable} key to add to the tree.
      */
-    public  void insert(T element){
+    public  void insert(T key){
         if(root == null) {
-            root = new Node(element);
+            root = new Node(key);
             count++;
             return;
         }
@@ -76,7 +86,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node curr = root, prev = null;
         while(curr != null){
             prev = curr;
-            if(element.compareTo(curr.value) < 0) {
+            if(key.compareTo(curr.key) < 0) {
                 curr = curr.left;
                 left = true;
                 right = false;
@@ -86,12 +96,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 right = true;
             }
         }
-        if (left == right)  // TODO: Remember to point out to the students what an awesome IDE does for you.
-            throw new AssertionError("Failed an invariant of iterative insertion.");
         if(left)
-            prev.left = new Node(element);
+            prev.left = new Node(key);
         else
-            prev.right = new Node(element);
+            prev.right = new Node(key);
         count++;
     }
 
@@ -111,9 +119,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public T search(T key){
         Node curr = root;
         while(curr != null){
-            if(curr.value.compareTo(key) == 0)
+            if(curr.key.compareTo(key) == 0)
                 return key;
-            else if(curr.value.compareTo(key) > 0)
+            else if(curr.key.compareTo(key) > 0)
                 curr = curr.left;
             else
                 curr = curr.right;
@@ -122,9 +130,45 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     /**
-     * 
+     * Deletes <tt>key</tt> from the tree if it's there, otherwise does nothing.
+     * @param key The {@link java.lang.Comparable} key to delete from the tree.
      */
     public void delete(T key){
+        root = delete(root, key); // call to private method, implemented below.
+    }
 
+    // TODO: Once you pass the unit tests for this, do an iterative delete().
+    private Node delete(Node curr, T key){
+        if(curr == null)
+            return null;
+        if(curr.key.compareTo(key) > 0)
+            curr.left = delete(curr.left, key);
+        else if(curr.key.compareTo(key) < 0)
+            curr.right =  delete(curr.right, key);
+        else { // All actual deletion cases will be implemented here.
+            if((curr.right == null) && (curr.left == null)) {// pure leaf;
+                curr = null;
+                count--;
+            }
+            else if (curr.right == null){ // Has a left subtree - return that
+                curr = curr.left;
+                count--;
+            }
+            else { // Has a right subtree. Swap with inorder successor.
+                curr.key = curr.inSucc().key;
+                curr.right = delete(curr.right, curr.key);
+            }
+        }
+        return curr;
+    }
+
+
+
+    /**
+     * Queries the BST for emptiness.
+     * @return true if, and only if, there are zero keys in the tree.
+     */
+    public boolean isEmpty(){
+        return (count == 0);
     }
 }

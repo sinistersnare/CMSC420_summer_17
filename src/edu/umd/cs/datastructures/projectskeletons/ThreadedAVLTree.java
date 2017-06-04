@@ -15,6 +15,7 @@ import java.util.Iterator;                              // You need this import 
  */
 public class ThreadedAVLTree<T extends Comparable<T>> {
 
+	private static final String UNIMPL_MSG = "UNIMPLEMENTED PUBLIC METHOD!";
     /* Place your private, package-private and protected members
      * and methods here:
      */
@@ -34,7 +35,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	    /*
 		 *  Fill-in the code here!
 		 */
-	    throw new RuntimeException("UNIMPLEMENTED CONSTRUCTOR!");
+	    throw new RuntimeException(UNIMPL_MSG);
 
         /* Jason's Note: Depending on how you handle things. it might be completely ok
          * to have nothing in your constructor. That is, the only thing you'd need to do
@@ -49,7 +50,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		/*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		/*
 		 *  Fill-in the code here!
 		 */
-		throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+		throw new RuntimeException(UNIMPL_MSG);
 	}
 
 	/**
@@ -75,7 +76,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	    /*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 
 
@@ -89,7 +90,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		/*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		/*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	    /*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 
 	/**
@@ -128,6 +129,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		/*
 		 *  Fill-in the code here!
 		 */
-        throw new RuntimeException("UNIMPLEMENTED PUBLIC METHOD!");
+        throw new RuntimeException(UNIMPL_MSG);
 	}
 }

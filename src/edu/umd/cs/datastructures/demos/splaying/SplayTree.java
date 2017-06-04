@@ -93,7 +93,7 @@ public class SplayTree<T extends Comparable<T>> {
 	 * Searches for <tt>key</tt> in the splay tree.
 	 * @param key  The {#java.lang.{@link Comparable}} key to insert in the tree.
 	 * @return The key, if it is found; <tt>null</tt> otherwise.
-	 * @see #remove(Comparable)
+	 * @see #delete(Comparable)
 	 */
 	public T search(T key){
 		if(isEmpty())
@@ -112,7 +112,7 @@ public class SplayTree<T extends Comparable<T>> {
 	 * @return <tt>key</tt>, if it was found in the tree; <tt>null</tt> otherwise.
 	 * @see #search(Comparable)
 	 */
-	public T remove(T key){
+	public T delete(T key){
 		if(isEmpty())
 			return null;
 		root = splay(root, key);
