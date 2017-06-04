@@ -108,7 +108,7 @@ public class SplayTree<T extends Comparable<T>> {
 
 	/**
 	 * Removes <tt>key</tt> from the tree and returns it.
-	 * @param key The {#java.lang.{@link Comparable}} key to delete from the tree.
+	 * @param key The {#java.lang.{@link Comparable}} key to deleteRec from the tree.
 	 * @return <tt>key</tt>, if it was found in the tree; <tt>null</tt> otherwise.
 	 * @see #search(Comparable)
 	 */

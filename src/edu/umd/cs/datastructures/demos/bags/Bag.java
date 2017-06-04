@@ -9,7 +9,7 @@ package edu.umd.cs.datastructures.demos.bags;
  *  <li>"Shaking" the bag, which randomly perturbs the elements of the bag. This method will be crucial for our algorithmic
  *  analysis.</li>
  * </ul>
- * Bags are allowed to grow arbitrarily. One cannot delete elements from a bag.
+ * Bags are allowed to grow arbitrarily. One cannot deleteRec elements from a bag.
  * @author jason
  * @version 1.0
  * @see java.lang.Iterable

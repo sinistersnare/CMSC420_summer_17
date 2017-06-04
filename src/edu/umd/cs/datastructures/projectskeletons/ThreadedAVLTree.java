@@ -56,7 +56,7 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	/**
 	 * Delete the key from the data structure and return it to the caller. Note that it is assumed that there are no
      * duplicate keys in the tree. That is, if a key is deleted from the tree, it should no longer be found in it.
-	 * @param key The key to delete from the structure.
+	 * @param key The key to deleteRec from the structure.
 	 * @return The key that was removed, or <tt>null</tt> if the key was not found.
 	 */
 	public T delete(T key){

@@ -25,6 +25,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 curr = curr.left;
             return curr;
         }
+
+        // This will deleteRec the inorder successor of a given node from the tree.
+        // It is assumed that the inorder successor exists (i.e the argument to this method is non-null
+
+        void delInSucc(){
+            assert right != null;  // Otherwise the caller is making the wrong application
+            Node prev = this, curr = right;
+            while(curr.left != null){
+                prev = curr;
+                curr = curr.left;
+            }
+            prev.left = null; // Throw away the leftmost child in the subtree rooted at this.right;
+        }
     };
 
 
@@ -131,20 +144,22 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     /**
      * Deletes <tt>key</tt> from the tree if it's there, otherwise does nothing.
-     * @param key The {@link java.lang.Comparable} key to delete from the tree.
+     * @param key The {@link java.lang.Comparable} key to deleteRec from the tree.
      */
     public void delete(T key){
-        root = delete(root, key); // call to private method, implemented below.
+        // root = deleteRec(root, key); // call to private recursive method, implemented below.
+        deleteIter(key); // call to private iterative method, implemented below.
     }
 
-    // TODO: Once you pass the unit tests for this, do an iterative delete().
-    private Node delete(Node curr, T key){
+    /* Private deletion routines. One recursive, one iterative. */
+
+    private Node deleteRec(Node curr, T key){
         if(curr == null)
             return null;
         if(curr.key.compareTo(key) > 0)
-            curr.left = delete(curr.left, key);
+            curr.left = deleteRec(curr.left, key);
         else if(curr.key.compareTo(key) < 0)
-            curr.right =  delete(curr.right, key);
+            curr.right =  deleteRec(curr.right, key);
         else { // All actual deletion cases will be implemented here.
             if((curr.right == null) && (curr.left == null)) {// pure leaf;
                 curr = null;
@@ -156,10 +171,47 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
             else { // Has a right subtree. Swap with inorder successor.
                 curr.key = curr.inSucc().key;
-                curr.right = delete(curr.right, curr.key);
+                curr.right = deleteRec(curr.right, curr.key);
             }
         }
         return curr;
+    }
+
+    private void deleteIter(T key){
+        Node curr = root, prev = null;
+        boolean found = false;
+        while(curr != null){
+            if(curr.key.compareTo(key) > 0){ // Gotta go left
+                prev = curr;
+                curr = curr.left;
+            }
+            else if(curr.key.compareTo(key) < 0) { // Gotta go right
+                prev = curr;
+                curr = curr.right;
+            }
+            else { // Found it!
+                found = true;
+                if(count == 1) { // deleting root
+                    root = null;
+                    count--;
+                    return; // I got your structured programming guidelines right here
+                }
+                if(curr.left == null && curr.right == null) { // leaf, throw it away
+                    if(prev.left == curr) prev.left = null;
+                    else prev.right = null;
+                    curr = null;
+                } else if(curr.right == null) { // Null right subtree, alive and kicking left one.
+                    if (prev.right == curr) prev.right = curr.left;
+                    else prev.left = curr.left;
+                } else { // Have to swap with inorder successor.
+                    curr.key = curr.inSucc().key;
+                    curr.delInSucc();
+                }
+                break;
+            }
+        }
+        if(found)
+            count--;
     }
 
 
