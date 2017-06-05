@@ -1,6 +1,7 @@
-package edu.umd.cs.datastructures.projectskeletons; // YOU WILL NEED TO ERASE THIS LINE BEFORE SUBMISSION
+package edu.umd.cs.datastructures.projectskeletons;
 
-import java.util.Iterator; // You need this import because of the interface method inorderTraversal()'s return type.
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * <p>
@@ -33,25 +34,27 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 
 		public Node(T data) {
 			this.data = data;
+			this.isLeftThread = true;
+			this.isRightThread = true;
 		}
 
 		public int getBalanceFactor() {
-			int rightHeight = 0, leftHeight = 0;
-			if (this.right != null) {
-				rightHeight = this.right.height() + 1;
-			}
-			if (this.left != null) {
+			int leftHeight = 0, rightHeight = 0;
+			if (!this.isLeftThread) {
 				leftHeight = this.left.height() + 1;
+			}
+			if (!this.isRightThread) {
+				rightHeight = this.right.height() + 1;
 			}
 			return rightHeight - leftHeight;
 		}
 
 		public int height() {
 			int leftHeight = 0, rightHeight = 0;
-			if (this.left != null) {
+			if (!this.isLeftThread) {
 				leftHeight = this.left.height() + 1;
 			}
-			if (this.right != null) {
+			if (!this.isRightThread) {
 				rightHeight = this.right.height() + 1;
 			}
 			return Math.max(leftHeight, rightHeight);
@@ -72,9 +75,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 			while (!cur.isLeftThread) {
 				cur = cur.left;
 			}
-			// assert (cur.left.data.equals(this.data));
-			// TODO Threads should guarantee this.
-			// when threads implemented, uncomment that assertion
 			return cur;
 		}
 
@@ -86,11 +86,40 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 			while (!cur.isRightThread) {
 				cur = cur.right;
 			}
-			assert (cur.right.data.equals(this.data));
-			// assert (cur.right.data.equals(this.data));
-			// TODO: Threads should guarantee this.
-			// when threads implemented, uncomment that assertion
 			return cur;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Node<Data={");
+			sb.append(this.data.toString());
+			sb.append("}, Left={");
+			if (this.isLeftThread) {
+				sb.append("Thread->");
+				if (this.left == null) {
+					sb.append("null");
+				} else {
+					sb.append(this.left.data.toString());
+				}
+			} else {
+				sb.append("Direct->");
+				sb.append(this.left.toString());
+			}
+			sb.append("}, Right={");
+			if (this.isRightThread) {
+				sb.append("Thread->");
+				if (this.right == null) {
+					sb.append("null");
+				} else {
+					sb.append(this.right.data.toString());
+				}
+			} else {
+				sb.append("Direct->");
+				sb.append(this.right.toString());
+			}
+			sb.append("}>");
+			return sb.toString();
 		}
 	}
 
@@ -101,6 +130,77 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	 * depend on the presence of a default constructor.
 	 */
 	public ThreadedAVLTree() {
+	}
+
+	private Node rotateLeft(Node oldRoot) {
+		Node newRoot = oldRoot.right;
+		if (newRoot.isLeftThread) {
+			oldRoot.isRightThread = true;
+		} else {
+			oldRoot.right = newRoot.left;
+		}
+		newRoot.left = oldRoot;
+		newRoot.isLeftThread = false;
+		if (!newRoot.isRightThread) {
+			Node newRootSucc = newRoot.inorderSucc();
+			newRootSucc.isLeftThread = true;
+			newRootSucc.left = newRoot;
+		}
+		if (!newRoot.isLeftThread) {
+			Node newRootPred = newRoot.inorderPred();
+			newRootPred.isRightThread = true;
+			newRootPred.right = newRoot;
+		} else {
+			throw new IllegalStateException("rotateLeft -- " + this.root.toString());
+		}
+		return newRoot;
+	}
+
+	private Node rotateRight(Node oldRoot) {
+		Node newRoot = oldRoot.left;
+		if (newRoot.isRightThread) {
+			oldRoot.isLeftThread = true;
+		} else {
+			oldRoot.left = newRoot.right;
+		}
+		newRoot.right = oldRoot;
+		newRoot.isRightThread = false;
+		if (!newRoot.isRightThread) {
+			Node newRootSucc = newRoot.inorderSucc();
+			newRootSucc.isLeftThread = true;
+			newRootSucc.left = newRoot;
+		} else {
+			throw new IllegalStateException("rotateRight -- " + this.root.toString());
+		}
+		if (!newRoot.isLeftThread) {
+			Node newRootPred = newRoot.inorderPred();
+			newRootPred.isRightThread = true;
+			newRootPred.right = newRoot;
+		}
+		return newRoot;
+	}
+
+	private Node rebalance(Node cur) {
+		int curBalance = cur.getBalanceFactor();
+		// possible rotations if tree becomes unbalanced.
+		if (curBalance > 1) { // if right heavy
+			if (cur.right.getBalanceFactor() <= -1) {
+				// if right subtree is left heavy
+				cur.right = rotateRight(cur.right); // LR/double-left rotation
+				cur = rotateLeft(cur);
+			} else {
+				cur = rotateLeft(cur); // Left rotation
+			}
+		} else if (curBalance < -1) { // if left heavy
+			if (cur.left.getBalanceFactor() >= 1) {
+				// if left subtree is right heavy
+				cur.left = rotateLeft(cur.left); // RL/double-right rotation
+				cur = rotateRight(cur);
+			} else {
+				cur = rotateRight(cur); // Right rotation
+			}
+		}
+		return cur;
 	}
 
 	/**
@@ -118,52 +218,36 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		this.root = this.rebalance(this.root);
 	}
 
-	public Node rotateRight(Node cur) {
-		Node temp = cur.left;
-		cur.left = temp.right;
-		temp.right = cur;
-		return temp;
-	}
-
-	public Node rotateLeft(Node cur) {
-		Node temp = cur.right;
-		cur.right = temp.left;
-		temp.left = cur;
-		return temp;
-	}
-
-	public Node insert(T key, Node cur) {
+	private Node insert(T key, Node cur) {
 		if (cur == null) {
+			// pretty sure this only happens when root is null.
+			if (this.root != null) {
+				throw new IllegalStateException("ROOT NOT NULL! -- " + this.root.toString());
+			}
 			return new Node(key);
 		}
 		if (cur.compareTo(key) > 0) {
-			cur.left = insert(key, cur.left);
+			if (cur.isLeftThread) {
+				Node oldLeftThread = cur.left;
+				cur.left = new Node(key);
+				cur.isLeftThread = false;
+				cur.left.right = cur; // thread successor
+				cur.left.left = oldLeftThread;
+			} else {
+				cur.left = insert(key, cur.left);
+			}
 		} else if (cur.compareTo(key) < 0) {
-			cur.right = insert(key, cur.right);
+			if (cur.isRightThread) {
+				Node oldRightThread = cur.right;
+				cur.right = new Node(key);
+				cur.isRightThread = false;
+				cur.right.right = oldRightThread; // inherit successor.
+				cur.right.left = cur; // thread predecessor
+			} else {
+				cur.right = insert(key, cur.right);
+			}
 		}
 		cur = this.rebalance(cur);
-		return cur;
-	}
-
-	private Node rebalance(Node cur) {
-		// possible rotations if tree becomes unbalanced.
-		if (cur.getBalanceFactor() > 1) { // if right heavy
-			if (cur.right.getBalanceFactor() < -1) {
-				// if right subtree is left heavy
-				cur.left = rotateLeft(cur.left); // LR/double-left rotation
-				cur = rotateRight(cur);
-			} else {
-				cur = rotateLeft(cur); // Left rotation
-			}
-		} else if (cur.getBalanceFactor() < -1) { // if left heavy
-			if (cur.left.getBalanceFactor() > 1) {
-				// if left subtree is right heavy
-				cur.right = rotateRight(cur.right); // RL/double-right rotation
-				cur = rotateLeft(cur);
-			} else {
-				cur = rotateRight(cur); // Right rotation
-			}
-		}
 		return cur;
 	}
 
@@ -179,38 +263,61 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 	 */
 	public T delete(T key) {
 		// TODO this is a standard BST delete.
-		Node ret = this.deleteAux(key, this.root);
-		if (ret == null) {
+		if (this.lookup(key) == null) {
 			return null;
 		}
+		Node ret = this.deleteAux(key, this.root);
 		this.root = ret;
 		return key;
 	}
 
-	public Node deleteAux(T key, Node cur) {
-		if (cur == null) {
-			return null;
-		}
+	private Node deleteAux(T key, Node cur) {
 		if (cur.compareTo(key) > 0) {
-			if (cur.isLeftThread) {
-				return null;
-			}
+			Node oldLeft = cur.left;
 			cur.left = deleteAux(key, cur.left);
-		} else if (cur.compareTo(key) < 0) {
-			if (cur.isRightThread) {
-				return null;
+			if (cur.left == null) {
+				cur.isLeftThread = true;
+				cur.left = oldLeft.left;
 			}
+		} else if (cur.compareTo(key) < 0) {
+			Node oldRight = cur.right;
 			cur.right = deleteAux(key, cur.right);
-		} else {
+			if (cur.right == null) {
+				cur.isRightThread = true;
+				cur.right = oldRight.right;
+			}
+		} else { // at the node.
 			if (cur.isRightThread) {
-				return cur.left;
+				if (cur.isLeftThread) {
+					// leaf -- replace with nothing.
+					return null;
+				} else {
+					// only left exists --
+					// can replace cur node with inorder predecessor
+					Node newCur = cur.inorderPred();
+					cur.left = deleteAux(newCur.data, cur.left);
+					if (cur.left == null) {
+						cur.isLeftThread = true;
+						cur.left = newCur.left;
+					} else {
+						throw new IllegalStateException(
+								"i1 -- Should have Balanced by here -- " + this.root.toString());
+					}
+					cur.data = newCur.data;
+				}
 			} else {
-				Node succ = cur.inorderSucc();
-				cur.data = succ.data;
-				cur.right = deleteAux(succ.data, cur.right);
+				// right exists
+				// can replace cur node with inorder successor.
+				Node newCur = cur.inorderSucc();
+				cur.right = deleteAux(newCur.data, cur.right);
+				if (cur.right == null) {
+					cur.isRightThread = true;
+					cur.right = newCur.right;
+				}
+				cur.data = newCur.data;
 			}
 		}
-		rebalance(cur);
+		cur = rebalance(cur);
 		return cur;
 	}
 
@@ -307,25 +414,33 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 				return;
 			}
 			this.cur = root;
-			while (this.cur.left != null) {
+			while (!this.cur.isLeftThread) {
 				this.cur = this.cur.left;
 			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			return cur == null;
+			return this.hasNext = this.cur != null;
 		}
 
 		@Override
 		public T next() {
-			if (!hasNext) {
-				return null;
+			if (!this.hasNext) {
+				throw new NoSuchElementException("No more elements!");
 			}
-			T val = cur.data;
-			cur = cur.inorderSucc();
+			T val = this.cur.data;
+			this.cur = this.cur.inorderSucc();
 			return val;
 		}
+	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("TAVLTree<root=");
+		sb.append(this.root.toString());
+		sb.append(">");
+		return sb.toString();
 	}
 }
