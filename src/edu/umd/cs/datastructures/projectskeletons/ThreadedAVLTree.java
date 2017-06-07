@@ -122,8 +122,8 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
      * YOU SHOULD NOT HAVE ANY KIND OF RECURSION IN THE IMPLEMENTATION OF THIS METHOD, NOR SHOULD YOU USE A STACK OF ANY
      * KIND! WE <b>WILL</b> CHECK YOUR SOURCE CODE TO MAKE SURE YOU ADHERE TO THESE SPECIFICATIONS FOR THE RELEVANT
      * TEST CREDIT!
-	 * @return An {@link java.util.Iterator} over <tt>T</tt>s, which exposes the elements in
-	 * ascending order.
+	 * @return An {@link Iterator} over <tt>T</tt>s, which exposes the elements in
+	 * ascending order. If the tree is empty, the {@link Iterator}'s first call to {@link Iterator#hasNext()} will return <tt>false</tt>.
 	 */
 	public Iterator<T> inorderTraversal(){
 		/*
