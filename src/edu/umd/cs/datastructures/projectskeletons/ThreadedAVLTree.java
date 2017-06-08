@@ -299,12 +299,12 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 				// right exists
 				// can replace cur node with inorder successor.
 				Node newCur = cur.inorderSucc();
+				cur.data = newCur.data;
 				cur.right = deleteAux(newCur.data, cur.right);
 				if (cur.right == null) {
 					cur.isRightThread = true;
 					cur.right = newCur.right;
 				}
-				cur.data = newCur.data;
 			}
 		}
 		cur = rebalance(cur);

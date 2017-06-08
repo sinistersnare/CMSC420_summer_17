@@ -8,9 +8,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -342,7 +345,81 @@ public class AVLTests {
 		assertEquals(xs, copy);
 		assertEquals(xs.get(0).intValue(), 0);
 		for (int i = 0; i < 5001; i++) {
-			assertEquals(xs.remove(0).intValue(), i*2);
+			assertEquals(xs.remove(0).intValue(), i * 2);
 		}
+	}
+
+	@Test
+	public void testInorderAfterSpecificDeletion() {
+		int TREE_SIZE = 30, SET_SIZE = TREE_SIZE / 3;
+		ThreadedAVLTree<Integer> a = new ThreadedAVLTree<>();
+		List<Integer> xs = new ArrayList<>();
+		Set<Integer> removed = new HashSet<>(SET_SIZE);
+		for (int i = TREE_SIZE; i >= 0; i--) {
+			a.insert(i);
+		}
+		// this set of elements to remove causes a bug.
+		assertNotNull(a.lookup(21));
+		int[] toRemove = { 1, 5, 8, 10, 19, 20, 25, 26 };
+		for (int i : toRemove) {
+			removed.add(i);
+			a.delete(i);
+		}
+
+		Iterator<Integer> it = a.inorderTraversal();
+		while (it.hasNext()) {
+			int i = it.next();
+			xs.add(i);
+		}
+
+		for (int i = 0; i < TREE_SIZE; i++) {
+			if (!removed.contains(i)) {
+				assertNotNull(a.lookup(i));
+			}
+		}
+
+		for (int i = 0; i < TREE_SIZE; i++) {
+			if (!removed.contains(i)) {
+				assertTrue(xs.contains(i));
+			}
+		}
+	}
+
+	@Test
+	public void testGeneralRandomDeletion() {
+
+		int TREE_SIZE = 5_000, SET_SIZE = TREE_SIZE / 3, AMT_TO_REMOVE = TREE_SIZE / 3;
+		ThreadedAVLTree<Integer> a = new ThreadedAVLTree<>();
+		Random r = new Random();
+		List<Integer> xs = new ArrayList<>();
+		Set<Integer> removed = new HashSet<>(SET_SIZE);
+		for (int i = TREE_SIZE; i >= 0; i--) {
+			a.insert(i);
+		}
+		for (int i = 0; i < AMT_TO_REMOVE; i++) {
+			int spot = r.nextInt(TREE_SIZE);
+			if (a.delete(spot) != null) {
+				removed.add(spot);
+			}
+		}
+
+		Iterator<Integer> it = a.inorderTraversal();
+		while (it.hasNext()) {
+			int i = it.next();
+			xs.add(i);
+		}
+
+		for (int i = 0; i < TREE_SIZE; i++) {
+			if (!removed.contains(i)) {
+				assertNotNull(a.lookup(i));
+			}
+		}
+
+		for (int i = 0; i < TREE_SIZE; i++) {
+			if (!removed.contains(i)) {
+				assertTrue(xs.contains(i));
+			}
+		}
+
 	}
 }
