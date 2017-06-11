@@ -194,11 +194,11 @@ public class BinarySearchTreeTest {
         it1 = tree.rangeSearch(1, 10);
         assertTrue("it1 did not return expected range.", testRange(it1, 1, 10, is));
         it2 = tree.rangeSearch(0, 10);
-        assertTrue("it2 did not return expected range.", testRange(it2, 0, 10, is));
+        assertTrue("it2 did not return expected range.", testRange(it2, 1, 10, is));
         it3 = tree.rangeSearch(1, 11);
-        assertTrue("it3 did not return expected range.", testRange(it3, 1, 11, is));
+        assertTrue("it3 did not return expected range.", testRange(it3, 1, 10, is));
         it4 = tree.rangeSearch(0, 11);
-        assertTrue("it4 did not return expected range.", testRange(it4, 0, 11, is));
+        assertTrue("it4 did not return expected range.", testRange(it4, 1, 10, is));
         it5 = tree.rangeSearch(2, 8);
         assertTrue("it5 did not return expected range.", testRange(it5, 2, 8, is));
         it6 = tree.rangeSearch(3, 7);
@@ -208,7 +208,7 @@ public class BinarySearchTreeTest {
         it8 = tree.rangeSearch(5, 5);
         assertTrue("it8 did not return expected range.", testRange(it8, 5, 5, is));
         try {
-            it9 = tree.rangeSearch(6, 4);
+            tree.rangeSearch(6, 4);
         }catch(IllegalArgumentException ignored){
             // Do nothing
         } catch(Throwable t){
@@ -216,14 +216,15 @@ public class BinarySearchTreeTest {
         }
     }
 
+    // Exhaustively search the elements accessed by the iterator
     private boolean testRange(Iterator<Integer> it, Integer min, Integer max, List<Integer> list){
-        int start = list.indexOf(min), end = list.lastIndexOf(max);
-        int i = start;
+        int i = min;
         while(it.hasNext()){
-            if(!it.next().equals(list.get(i)))
+            if(!it.next().equals(i))
                 return false;
             i++;
         }
+        assert i == max : "i should be the right end of the range after we are done!";
         return true;
     }
 

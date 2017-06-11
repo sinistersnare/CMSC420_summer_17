@@ -174,9 +174,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
             rangeSearch(n.left, min, n.key, list);
             list.add(n.key);
             rangeSearch(n.right, n.key, max, list);
-        }else if(n.key.compareTo(min) <=0 ) {
+        } else if(n.key.compareTo(min) == 0) {
+            list.add(n.key);
             rangeSearch(n.right, n.key, max, list);
-        }else if(n.key.compareTo(max) >= 0 ) {
+        } else if(n.key.compareTo(min) < 0) {
+            rangeSearch(n.right, n.key, max, list);
+        } else if(n.key.compareTo(max) == 0 ) {
+            rangeSearch(n.left, min, n.key, list);
+            list.add(n.key); // ! If you want the range sorted...
+        } else if(n.key.compareTo(max) > 0 ) {
             rangeSearch(n.left, min, n.key, list);
         }
     }
