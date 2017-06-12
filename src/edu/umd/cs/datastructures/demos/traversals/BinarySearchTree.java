@@ -1,5 +1,7 @@
 package edu.umd.cs.datastructures.demos.traversals;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -140,6 +142,43 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 curr = curr.right;
         }
         return null;
+    }
+
+    /**
+     * Performs a range search on the binary tree. The search is <b>inclusive</b> on both ends and is implemented
+     * recursively. If <tt>min</tt> and  <tt>max</tt> are the same, {@link #search(Comparable)} is called.
+     * @param min the left end of the range search.
+     * @param max the right end of the range search.
+     * @return An {@link Iterator} that exposes the elements that satisfy the search in <b>ascending order</b></b>.
+     * @throws IllegalArgumentException if min > max.
+     */
+    public Iterator<T> rangeSearch(T min, T max) throws IllegalArgumentException{
+        ArrayList<T> list = new ArrayList<>();
+        if(min.compareTo(max) > 0)
+            throw new IllegalArgumentException("rangeSearch(): Undefined range. Given min = " + min + " max = " + max + ".");
+        else if(min.compareTo(max) == 0){
+            T key = search(min);
+            if(key != null)
+                list.add(key);
+        } else {
+            rangeSearch(root, min, max, list);
+        }
+        return list.iterator();
+    }
+
+    private void rangeSearch(Node n, T min, T max, List<T> list){
+        assert min.compareTo(max) <= 0 : "Min ought to be smaller than or equal to max.";
+        if(n == null)
+            return;
+        if(n.key.compareTo(min) > 0 && n.key.compareTo(max) < 0){
+            rangeSearch(n.left, min, n.key, list);
+            list.add(n.key);
+            rangeSearch(n.right, n.key, max, list);
+        }else if(n.key.compareTo(min) <=0 ) {
+            rangeSearch(n.right, n.key, max, list);
+        }else if(n.key.compareTo(max) >= 0 ) {
+            rangeSearch(n.left, min, n.key, list);
+        }
     }
 
     /**

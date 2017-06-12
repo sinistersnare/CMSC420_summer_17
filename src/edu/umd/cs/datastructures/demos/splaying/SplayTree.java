@@ -39,6 +39,10 @@ public class SplayTree<T extends Comparable<T>> {
 	 * Splaying is the chief operation in splay trees. It searches for the node that contains the key
 	 * provided. If it finds it, it ascends it to the top of the tree. If it does not, then the node that
 	 * contains either the preceding or following key in the sorted key list ascends to the top of the tree.
+	 *
+	 * Note that this is a relatively inefficient splay. It's clean and it depends on tested rotation routines.
+	 * But it's recursive and it probably doesn't implement the zig-zag and zig-zig routines as efficiently as
+	 * they can be implemented. Fork me, solve it, and show me how it's done through a Pull Request!
 	 */
 	private Node splay(Node root, T key){
 		if(key.compareTo(root.key) < 0){
