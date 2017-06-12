@@ -32,3 +32,6 @@
 *.bbl
 *.blg
 *.snm
+
+/doc/examcode
+/doc/examples

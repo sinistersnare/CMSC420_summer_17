@@ -149,8 +149,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * recursively. If <tt>min</tt> and  <tt>max</tt> are the same, {@link #search(Comparable)} is called.
      * @param min the left end of the range search.
      * @param max the right end of the range search.
-     * @return An {@link Iterator} that exposes the elements that satisfy the search in <b>ascending order</b></b>.
-     * @throws IllegalArgumentException if min > max.
+     * @return An {@link Iterator} that exposes the elements that satisfy the search in <b>ascending order</b>.
+     * @throws IllegalArgumentException if min &gt; max.
      */
     public Iterator<T> rangeSearch(T min, T max) throws IllegalArgumentException{
         ArrayList<T> list = new ArrayList<>();
@@ -181,7 +181,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             rangeSearch(n.right, n.key, max, list);
         } else if(n.key.compareTo(max) == 0 ) {
             rangeSearch(n.left, min, n.key, list);
-            list.add(n.key); // ! If you want the range sorted...
+            list.add(n.key); // ! If you want the range sorted, the addition should be after the recursive call.
         } else if(n.key.compareTo(max) > 0 ) {
             rangeSearch(n.left, min, n.key, list);
         }
