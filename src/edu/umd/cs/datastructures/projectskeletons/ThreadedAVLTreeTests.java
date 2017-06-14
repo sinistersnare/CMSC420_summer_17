@@ -1,9 +1,9 @@
-import org.junit.*;
+package edu.umd.cs.datastructures.projectskeletons;
 
+import org.junit.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-
 import static org.junit.Assert.*;
 
 /** A class containing jUnit tests to test the students' code with.
