@@ -17,11 +17,11 @@ public class ThreadedAVLTreeTests {
 	private static final Integer ZERO = new Integer(0);
 	private static final int NUMS = 150;
 
-	/** Set-up the trees that we will use for our tests.
-	 * @throws java.lang.Exception
+	/**
+	 * Set-up the trees that we will use for our tests.
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		intTree = new ThreadedAVLTree<Integer>();
 		stringTree = new ThreadedAVLTree<String>();
 	}
@@ -890,11 +890,10 @@ public class ThreadedAVLTreeTests {
 	}
 
 	/** Destroy the trees after every test. We could sequentially delete all nodes, but we will be
-	 * testing deletion separately anyway. 
-	 * @throws java.lang.Exception
+	 * testing deletion separately anyway.
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		// Allow garbage collection to occur....
 		intTree = null;
 		stringTree = null; 
