@@ -6,5 +6,6 @@ edu.umd.cs.datastructures.demos.splaying
 edu.umd.cs.datastructures.demos.traversals
 edu.umd.cs.datastructures.examcode.matrix
 edu.umd.cs.datastructures.examcode.stack
-edu.umd.cs.datastructures.projectskeletons
+edu.umd.cs.datastructures.projectskeletons.patricia
+edu.umd.cs.datastructures.projectskeletons.tavl
 examples

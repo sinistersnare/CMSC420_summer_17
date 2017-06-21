@@ -1,4 +1,4 @@
-package edu.umd.cs.datastructures.projectskeletons;
+package edu.umd.cs.datastructures.projectskeletons.tavl;
 
 import org.junit.*;
 import java.util.Collections;
