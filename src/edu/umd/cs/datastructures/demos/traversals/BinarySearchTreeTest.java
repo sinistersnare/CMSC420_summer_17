@@ -184,4 +184,48 @@ public class BinarySearchTreeTest {
 
     }
 
+    @Test
+    public void testRangeSearch(){
+        List<Integer> is = IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList());
+        Collections.shuffle(is, r);
+        is.forEach(tree::insert);
+        Collections.sort(is);
+        Iterator<Integer> it1, it2, it3, it4, it5, it6, it7, it8, it9;
+        it1 = tree.rangeSearch(1, 10);
+        assertTrue("it1 did not return expected range.", testRange(it1, 1, 10, is));
+        it2 = tree.rangeSearch(0, 10);
+        assertTrue("it2 did not return expected range.", testRange(it2, 1, 10, is));
+        it3 = tree.rangeSearch(1, 11);
+        assertTrue("it3 did not return expected range.", testRange(it3, 1, 10, is));
+        it4 = tree.rangeSearch(0, 11);
+        assertTrue("it4 did not return expected range.", testRange(it4, 1, 10, is));
+        it5 = tree.rangeSearch(2, 8);
+        assertTrue("it5 did not return expected range.", testRange(it5, 2, 8, is));
+        it6 = tree.rangeSearch(3, 7);
+        assertTrue("it6 did not return expected range.", testRange(it6, 3, 7, is));
+        it7 = tree.rangeSearch(4, 6);
+        assertTrue("it7 did not return expected range.", testRange(it7, 4, 6, is));
+        it8 = tree.rangeSearch(5, 5);
+        assertTrue("it8 did not return expected range.", testRange(it8, 5, 5, is));
+        try {
+            tree.rangeSearch(6, 4);
+        }catch(IllegalArgumentException ignored){
+            // Do nothing
+        } catch(Throwable t){
+            fail("testRangeSearch(): Caught a " + t.getClass().getSimpleName() + " while supplying an invalid range search to our tree. Message was: " + t.getMessage() + ".");
+        }
+    }
+
+    // Exhaustively search the elements accessed by the iterator
+    private boolean testRange(Iterator<Integer> it, Integer min, Integer max, List<Integer> list){
+        int i = min;
+        while(it.hasNext()){
+            if(!it.next().equals(i))
+                return false;
+            i++;
+        }
+        assert i == max : "i should be the right end of the range after we are done!";
+        return true;
+    }
+
 }

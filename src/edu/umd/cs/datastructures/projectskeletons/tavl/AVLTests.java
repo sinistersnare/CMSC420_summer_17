@@ -1,4 +1,4 @@
-package edu.umd.cs.datastructures.projectskeletons;
+package edu.umd.cs.datastructures.projectskeletons.tavl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
