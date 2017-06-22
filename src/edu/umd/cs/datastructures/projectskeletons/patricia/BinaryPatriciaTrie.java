@@ -3,7 +3,7 @@ import java.util.Iterator;
 
 
 /**
- * <p><tt>BinaryPatriciaTrie</tt> is a Patricia Trie over the binary alphabet &#123;0, 1&#124;. By restricting themselves to
+ * <p><tt>BinaryPatriciaTrie</tt> is a Patricia Trie over the binary alphabet &#123;0, 1&#125;. By restricting themselves to
  * this small but terrifically useful alphabet, Binary Patricia Tries combine all the positive aspects of Patricia Tries
  * while shedding the storage cost typically associated with Tries that deal with huge alphabets. </p>
  * @author  ------ YOUR NAME HERE! ----------
