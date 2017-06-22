@@ -296,12 +296,12 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 				// right exists
 				// can replace cur node with inorder successor.
 				Node newCur = cur.inorderSucc();
+				cur.data = newCur.data;
 				cur.right = deleteAux(newCur.data, cur.right);
 				if (cur.right == null) {
 					cur.isRightThread = true;
 					cur.right = newCur.right;
 				}
-				cur.data = newCur.data;
 			}
 		}
 		cur = rebalance(cur);
@@ -367,19 +367,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		return this.root.data;
 	}
 
-	/**
-	 * Generate an inorder traversal over the tree's stored keys. This should be
-	 * done by using the tree's threads, to be able to find every inorder
-	 * successor in amortized constant time. TO GET CREDIT IN RELATED UNIT
-	 * TESTS, YOU <b>MUST</b> USE THE TREE'S THREADS TO GENERATE THE TRAVERSAL!
-	 * IN FACT, YOU SHOULD NOT HAVE ANY KIND OF RECURSION IN THE IMPLEMENTATION
-	 * OF THIS METHOD, NOR SHOULD YOU USE A STACK OF ANY KIND! WE <b>WILL</b>
-	 * CHECK YOUR SOURCE CODE TO MAKE SURE YOU ADHERE TO THESE SPECIFICATIONS
-	 * FOR THE RELEVANT TEST CREDIT!
-	 * 
-	 * @return An {@link java.util.Iterator} over <tt>T</tt>s, which exposes the
-	 *         elements in ascending order.
-	 */
 	public Iterator<T> inorderTraversal() {
 		return new ThreadedTraversal(this.root);
 	}
