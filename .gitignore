@@ -1,5 +1,4 @@
 # I modified the list of ignores given to me by the latest pull.
-/bin
 /build
 /out
 
@@ -31,3 +30,6 @@
 *.bbl
 *.blg
 *.snm
+
+/doc/examples
+/bin/

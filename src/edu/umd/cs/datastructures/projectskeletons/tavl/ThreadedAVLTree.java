@@ -1,6 +1,7 @@
-package edu.umd.cs.datastructures.projectskeletons;
+package edu.umd.cs.datastructures.projectskeletons.tavl; // YOU WILL NEED TO ERASE THIS LINE BEFORE SUBMISSION
 
 import java.util.Iterator;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -123,12 +124,8 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		}
 	}
 
-	Node root;
+	public Node root;
 
-	/**
-	 * Default constructor. Your code should allow for one, since the unit tests
-	 * depend on the presence of a default constructor.
-	 */
 	public ThreadedAVLTree() {
 	}
 
@@ -251,16 +248,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		return cur;
 	}
 
-	/**
-	 * Delete the key from the data structure and return it to the caller. Note
-	 * that it is assumed that there are no duplicate keys in the tree. That is,
-	 * if a key is deleted from the tree, it should no longer be found in it.
-	 * 
-	 * @param key
-	 *            The key to delete from the structure.
-	 * @return The key that was removed, or <tt>null</tt> if the key was not
-	 *         found.
-	 */
 	public T delete(T key) {
 		// TODO this is a standard BST delete.
 		if (this.lookup(key) == null) {
@@ -351,14 +338,6 @@ public class ThreadedAVLTree<T extends Comparable<T>> {
 		return null;
 	}
 
-	/**
-	 * Return the height of the tree. The height of the tree is defined as the
-	 * length of the longest path between the root and the leaf level. By
-	 * definition of path length, a stub tree has a height of 0, and we define
-	 * an empty tree to have a height of -1.
-	 * 
-	 * @return The height of the tree.
-	 */
 	public int height() {
 		if (root == null) {
 			return -1;
