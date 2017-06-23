@@ -90,7 +90,7 @@ public class BinaryPatriciaTrie {
 	}
 
 	/** Finds the longest {@link String} stored in the Binary Patricia Trie.
-	 * @return The longest {@link String} stored in <tt>this</tt>.
+	 * @return The longest {@link String} stored in <tt>this</tt>. If the trie is empty, the <b>empty string</b> &quot;&quot; should be returned. <b>Careful: the empty string &quot;&quot;is not the same string as &quot; &quot;&#59;	the latter is a string consisting of a space character!</b>
 	 */
 	public String getLongest () {
 		throw UNIMPL_METHOD_EXC; // ERASE THIS BEFORE YOU TEST YOUR CODE!
