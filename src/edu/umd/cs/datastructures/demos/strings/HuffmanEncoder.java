@@ -12,7 +12,7 @@ public class HuffmanEncoder {
     private String input;
 
     private class Node {
-        Character c; // Only non-null for leaf nodes. TODO: Split the Node polymorphically into InternalHuffmanNode and LeafHuffmanNode.
+        Character c; // Only non-null for leaf nodes. 
         long freq;
         Node left, right;
 
