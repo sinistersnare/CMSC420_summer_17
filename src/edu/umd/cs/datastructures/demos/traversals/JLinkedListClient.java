@@ -27,7 +27,7 @@ public class JLinkedListClient {
                 "\n Timing iterative counting.... \n " +
                 "--------------------------- \n");
         long start = currentTimeMillis();
-        System.out.println("List count retrieved was: " + l.countIter() + ".");
+        System.out.println("List getCount retrieved was: " + l.countIter() + ".");
         System.out.println("Iterative counting took " + (currentTimeMillis() - start) + " ms.\n");
 
         System.out.println("------------------------------------------" +
@@ -35,10 +35,10 @@ public class JLinkedListClient {
                 "------------------------------------------ \n");
         try {
             start = currentTimeMillis();
-            System.out.println("List count retrieved was: " + l.countStack() + ".");
+            System.out.println("List getCount retrieved was: " + l.countStack() + ".");
             System.out.println("Custom stack-based counting took " + (currentTimeMillis() - start)  + " ms. \n");
         } catch(Throwable t){
-            System.err.println("While generating the stack-based count, we received a " +
+            System.err.println("While generating the stack-based getCount, we received a " +
                     t.getClass().getSimpleName() + " with message: " + t.getMessage() + ".");
         }
 
@@ -47,10 +47,10 @@ public class JLinkedListClient {
                 "------------------------------------------\n");
         try {
             start = currentTimeMillis();
-            System.out.println("List count retrieved was: " + l.countRec() + ".");
+            System.out.println("List getCount retrieved was: " + l.countRec() + ".");
             System.out.println("System stack-based traversal took " + (currentTimeMillis() - start) + " ms.\n");
         }catch(Throwable t){
-            System.err.println("While generating the recursive count, we received a " +
+            System.err.println("While generating the recursive getCount, we received a " +
                     t.getClass().getSimpleName() + " with message: " + t.getMessage() + ".");
         }
 

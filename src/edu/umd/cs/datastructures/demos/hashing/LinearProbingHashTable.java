@@ -29,7 +29,7 @@ public class LinearProbingHashTable {
     public void insert(String key){
         int probe = myHash(key);
         while(buffer[probe] != null)
-            probe++;
+            probe = (probe + 1) % buffer.length;
         buffer[probe] = key;
         if((++count) > (buffer.length / 2))
             enlarge(); // This won't be costly or anything
@@ -40,22 +40,38 @@ public class LinearProbingHashTable {
         return (s.hashCode() & 0x7fffffff) % buffer.length;
     }
 
+    // We implement the approach that we talked about in class. This could probably be
+    // optimized through binary search.
     private void enlarge(){
         String[] old = buffer;
-        if(++currrPrimeInd > PRIMES.length)
-            throw new RuntimeException("Sorry boss, no more primes in my list.");
+        findNextSize();
+
         buffer = new String[PRIMES[currrPrimeInd]];
         for(String s : old)
             insert(s); // Reinsert everything to the new buffer
     }
 
+    private void findNextSize(){
+        int currSz = buffer.length;
+        for(int i = currrPrimeInd; i < PRIMES.length; i++) {
+            if (PRIMES[i] > 2 * currSz) {
+                currrPrimeInd = i - 1;
+                return;
+            }
+        }
+        throw new MaxEnlargementsReachedException("Linear probing hash table cannot enlarge further.");
+    }
+
     public String search(String key){
         int probe = myHash(key);
-        while(buffer[probe] != null)
-            if(key.equals(buffer[probe]))
+        while(buffer[probe] != null) {
+            if (key.equals(buffer[probe]))
                 return buffer[probe];
+            probe = (probe + 1) % buffer.length;
+        }
         return null;
     }
+
 
     public void delete(String key){
 
@@ -64,6 +80,14 @@ public class LinearProbingHashTable {
 
 
 
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public boolean isEmpty(){
+        return getCount() == 0;
     }
 
 

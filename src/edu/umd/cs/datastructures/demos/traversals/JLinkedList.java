@@ -2,7 +2,7 @@ package edu.umd.cs.datastructures.demos.traversals;
 
 import java.util.Stack;
 
-/**<p><tt>JLinkedList</tt> is a Linked List which offers three ways to compute its count:</p>
+/**<p><tt>JLinkedList</tt> is a Linked List which offers three ways to compute its getCount:</p>
  * <ol>
  *     <li>Purely iteratively.</li>
  *     <li>"Recursion" with a custom stack</li>
