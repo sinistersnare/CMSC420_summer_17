@@ -16,20 +16,23 @@ public class LinearProbingHashTable {
             353,	359,	367,	373,	379,	383,	389,	397,	401,	409,
             419,	421,	431,	433,	439,	443,	449,	457,	461,	463};
 
-    private int currrPrimeInd ;
+    private int currPrimeInd;
     private String[] buffer;
     private int count;
 
     public LinearProbingHashTable(){
-        currrPrimeInd =4; // Start with 13
-        buffer = new String[PRIMES[currrPrimeInd]];
+        currPrimeInd =4; // Start with 13
+        buffer = new String[PRIMES[currPrimeInd]];
         count = 0;
     }
 
     public void insert(String key){
         int probe = myHash(key);
-        while(buffer[probe] != null)
+        while(buffer[probe] != null) {
+            if(buffer[probe].equals(key))
+                return;
             probe = (probe + 1) % buffer.length;
+        }
         buffer[probe] = key;
         if((++count) > (buffer.length / 2))
             enlarge(); // This won't be costly or anything
@@ -45,17 +48,18 @@ public class LinearProbingHashTable {
     private void enlarge(){
         String[] old = buffer;
         findNextSize();
-
-        buffer = new String[PRIMES[currrPrimeInd]];
+        buffer = new String[PRIMES[currPrimeInd]];
+        count = 0; // Insertions will affect this, won't they?
         for(String s : old)
-            insert(s); // Reinsert everything to the new buffer
+            if(s!= null) // Don't forget; just because we enlarge, doesn't mean we don't have null values already!
+                insert(s); // Reinsert everything to the new buffer
     }
 
     private void findNextSize(){
         int currSz = buffer.length;
-        for(int i = currrPrimeInd; i < PRIMES.length; i++) {
+        for(int i = currPrimeInd; i < PRIMES.length; i++) {
             if (PRIMES[i] > 2 * currSz) {
-                currrPrimeInd = i - 1;
+                currPrimeInd = i - 1;
                 return;
             }
         }

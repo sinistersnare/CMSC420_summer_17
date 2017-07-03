@@ -44,6 +44,16 @@ public class LinearProbingTests {
     }
 
     @Test
+    public void testDuplicateInsertions(){
+        ht.insert("aba");
+        assertNotEquals("aba should have been found in the hash table.", null, ht.search("aba"));
+        ht.insert("aba");
+        assertNotEquals("aba should still have been found in the hash table.", null, ht.search("aba"));
+        assertFalse("Hash Table should no longer be empty.", ht.isEmpty());
+        assertEquals("Element count of hash table should be 1.", 1, ht.getCount());
+    }
+
+    @Test
     public void testInsertAndSearch(){
         for(String s : desserts)
             ht.insert(s);
@@ -56,9 +66,9 @@ public class LinearProbingTests {
 
     @Test
     public void stressTestInsert(){
-        IntStream.range(0, 200).forEach(x->ht.insert(String.valueOf(x)));
+        IntStream.range(0, 100).forEach(x->ht.insert(String.valueOf(x)));
         try {
-            IntStream.range(200, 400).forEach(x->ht.insert(String.valueOf(x)));
+            IntStream.range(100, 200).forEach(x->ht.insert(String.valueOf(x)));
         } catch(MaxEnlargementsReachedException ignored){
             // Good, we expected this.
         } catch(Throwable t){
