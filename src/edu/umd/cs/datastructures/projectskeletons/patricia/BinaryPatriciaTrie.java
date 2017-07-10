@@ -112,162 +112,77 @@ public class BinaryPatriciaTrie {
 		if (search(key)) {
 			return false;
 		}
-		this.root = insert(key, "", this.root);
+		if (key.charAt(0) == '0') {
+			this.root.left = insert(key, this.root.left);
+		} else {
+			this.root.right = insert(key, this.root.right);
+		}
 		this.size++;
 		return true;
 	}
 
-	/*
-	 * The worst thing ever. Sorry...
-	 */
-	public Node insert(String rest, String builtUp, Node cur) {
-		char lead = rest.charAt(0);
-		if (lead == '0') {
-			if (cur.left == null) {
-				cur.left = new Node();
-				cur.left.value = rest;
-				cur.left.isEnd = true;
-				return cur;
-			} else {
-				int commonAmount = this.commonPrefixAmount(rest, cur.left.value);
-				if (commonAmount == cur.left.value.length() && commonAmount == rest.length()) {
-					// the node we will visit is the rest of the string.
-					cur.left.isEnd = true;
-				} else if (commonAmount == cur.left.value.length()) {
-					// simple, just swallow the node, and continue.
-					// test by inserting 01 then 0110
-					builtUp += cur.left.value;
-					String nRest = rest.substring(commonAmount);
-					cur.left = insert(nRest, builtUp + cur.left.value, cur.left);
-				} else if (commonAmount == rest.length()) {
-					// split the child, the rest is a complete prefix of left
-					// test by inserting 0110 then 01
-					String right = cur.left.value.substring(commonAmount);
-					boolean wasEnd = cur.left.isEnd;
-					cur.left.value = rest;
-					cur.left.isEnd = true;
-					Node newChild = new Node();
-					newChild.isEnd = wasEnd;
-					newChild.value = right;
-					newChild.left = cur.left.left;
-					newChild.right = cur.left.right;
-					lead = right.charAt(0);
-					if (lead == '0') {
-						cur.left.left = newChild;
-						cur.left.right = null;
-					} else {
-						cur.left.right = newChild;
-						cur.left.left = null;
-					}
-				} else {
-					// common is less than both, so its in the middle somewhere.
-					String newCurVal = cur.left.value.substring(0, commonAmount);
-					String curOldHalf = cur.left.value.substring(commonAmount);
-					String restOldHalf = rest.substring(commonAmount);
-					boolean wasEnd = cur.left.isEnd;
-					cur.left.value = newCurVal;
-					cur.left.isEnd = false;
-
-					lead = restOldHalf.charAt(0);
-					if (lead == '0') {
-						Node newLeft = new Node();
-						Node newRight = new Node();
-						newLeft.value = restOldHalf;
-						newLeft.isEnd = true;
-						newRight.value = curOldHalf;
-						newRight.left = cur.left.left;
-						newRight.right = cur.left.right;
-						newRight.isEnd = wasEnd;
-						cur.left.left = newLeft;
-						cur.left.right = newRight;
-					} else {
-						Node newLeft = new Node();
-						Node newRight = new Node();
-						newRight.value = restOldHalf;
-						newRight.isEnd = true;
-						newLeft.value = curOldHalf;
-						newLeft.left = cur.left.left;
-						newLeft.right = cur.left.right;
-						newLeft.isEnd = wasEnd;
-						cur.left.left = newLeft;
-						cur.left.right = newRight;
-					}
-				}
-				return cur;
-			}
-			// else calculate commonPrefix
-		} else {
-			if (cur.right == null) {
-				cur.right = new Node();
-				cur.right.value = rest;
-				cur.right.isEnd = true;
-				return cur;
-			} else {
-				int commonAmount = this.commonPrefixAmount(rest, cur.right.value);
-				if (commonAmount == cur.right.value.length() && commonAmount == rest.length()) {
-					// the node we will visit is the rest of the string.
-					cur.right.isEnd = true;
-				} else if (commonAmount == cur.right.value.length()) {
-					// simple, just swallow the node, and continue.
-					// test by inserting 01 then 0110
-					builtUp += cur.right.value;
-					String nRest = rest.substring(commonAmount);
-					cur.right = insert(nRest, builtUp + cur.right.value, cur.right);
-				} else if (commonAmount == rest.length()) {
-					// split the child, the rest is a complete prefix of left
-					// test by inserting 0110 then 01
-					String rightHalf = cur.right.value.substring(commonAmount);
-					cur.right.value = rest;
-					cur.right.isEnd = true;
-					Node newChild = new Node();
-					newChild.value = rightHalf;
-					newChild.left = cur.right.left;
-					newChild.right = cur.right.right;
-					lead = rightHalf.charAt(0);
-					if (lead == '0') {
-						cur.right.right = newChild;
-						cur.right.left = null;
-					} else {
-						cur.right.left = newChild;
-						cur.right.right = null;
-					}
-				} else {
-					// common is less than both, so its in the middle somewhere.
-					String newCurVal = cur.right.value.substring(0, commonAmount);
-					String curOldHalf = cur.right.value.substring(commonAmount);
-					String restOldHalf = rest.substring(commonAmount);
-					boolean wasEnd = cur.right.isEnd;
-					cur.right.value = newCurVal;
-					cur.right.isEnd = false;
-
-					lead = restOldHalf.charAt(0);
-					if (lead == '0') {
-						Node newLeft = new Node();
-						Node newRight = new Node();
-						newLeft.value = restOldHalf;
-						newLeft.isEnd = true;
-						newRight.value = curOldHalf;
-						newRight.left = cur.right.left;
-						newRight.right = cur.right.right;
-						newRight.isEnd = wasEnd;
-						cur.right.left = newLeft;
-						cur.right.right = newRight;
-					} else {
-						Node newLeft = new Node();
-						Node newRight = new Node();
-						newRight.value = restOldHalf;
-						newRight.isEnd = true;
-						newLeft.value = curOldHalf;
-						newLeft.left = cur.right.left;
-						newLeft.right = cur.right.right;
-						newLeft.isEnd = wasEnd;
-						cur.right.left = newLeft;
-						cur.right.right = newRight;
-					}
-				}
-				return cur;
-			}
+	public Node insert(String rest, Node cur) {
+		if (cur == null) {
+			Node ret = new Node();
+			ret.isEnd = true;
+			ret.value = rest;
+			return ret;
 		}
+
+		if (rest.equals(cur.value)) {
+			cur.isEnd = true;
+			return cur;
+		}
+
+		int com = this.commonPrefixAmount(rest, cur.value);
+		if (com == rest.length()) {
+			// rest is a complete prefix of cur here.
+			// so if cur=1010 and rest=101, then we need to split cur.
+			String rightHalf = cur.value.substring(com);
+			Node newCur = new Node();
+			newCur.isEnd = true;
+			newCur.value = rest;
+			cur.value = cur.value.substring(com);
+			if (rightHalf.charAt(0) == '0') {
+				newCur.left = cur;
+			} else {
+				newCur.right = cur;
+			}
+			return newCur;
+		}
+		if (com == cur.value.length()) {
+			// cur is a complete prefix of rest,
+			// so just chomp it up and move to the next node.
+			String newRest = rest.substring(com);
+			char lead = newRest.charAt(0);
+			if (lead == '0') {
+				cur.left = insert(newRest, cur.left);
+			} else {
+				cur.right = insert(newRest, cur.right);
+			}
+			return cur;
+		}
+		// Here, the split is in the middle, and we need to branch
+		// the nodes. so if we have 1011 and 1010 then we need to split
+		// at the last character.
+		String prefix = rest.substring(0, com);
+		String restRest = rest.substring(com);
+		String curRest = cur.value.substring(com);
+		Node newCur = new Node();
+		Node restFinal = new Node();
+		newCur.value = prefix;
+		cur.value = curRest;
+		restFinal.isEnd = true;
+		restFinal.value = restRest;
+		
+		if (curRest.charAt(0) == '0') {
+			newCur.left = cur;
+			newCur.right = restFinal; 
+		} else {
+			newCur.left = restFinal;
+			newCur.right = cur;
+		}
+		return newCur;
 	}
 
 	private Node compressNode(Node cur) {
