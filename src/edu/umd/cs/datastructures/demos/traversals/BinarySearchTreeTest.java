@@ -175,7 +175,7 @@ public class BinarySearchTreeTest {
         int counter = allTree.getCount();
         for(Integer i: odds){
             allTree.delete(i);
-            assertEquals("After deleting " + i + ", we found out that the BST's node count was not accurate.", counter - 1, allTree.getCount());
+            assertEquals("After deleting " + i + ", we found out that the BST's node getCount was not accurate.", counter - 1, allTree.getCount());
             counter--;
         }
 
