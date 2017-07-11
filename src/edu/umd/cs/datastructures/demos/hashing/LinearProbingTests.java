@@ -77,4 +77,26 @@ public class LinearProbingTests {
     }
 
     // No deletion tests yet...
+
+    @Test
+    public void testDeleteInTable(){
+        // Test for deletion of keys in table.
+        IntStream.range(0, 100).forEach(x->ht.insert(String.valueOf(x)));
+        assertEquals("Count mismatch after inserting 100 keys", 100, ht.getCount());
+
+        assertEquals(ht.search(String.valueOf(1)), String.valueOf(1)); // ??
+        ht.delete(String.valueOf(1));
+        assertEquals("Count mismatch after deleting 1 key", 99, ht.getCount());
+
+        IntStream.range(10, 20).forEach(x->ht.delete(String.valueOf(x)));
+        assertEquals("Count mismatch after deleting 1 key", 89, ht.getCount());
+
+    }
+
+    @Test
+    public void testDeleteNotInTable(){
+        IntStream.range(0, 100).forEach(x->ht.insert(String.valueOf(x)));
+        ht.delete(String.valueOf(1000)); // should not affect count
+        assertEquals("Count mismatch after deleting a key that should not be in the hash table", 100, ht.getCount());
+    }
 }

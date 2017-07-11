@@ -34,7 +34,7 @@ public class CustomHashes {
 
         // A hash code method
 
-        /*
+
         @Override
         public int hashCode(){
             int hash = 17;
@@ -43,7 +43,7 @@ public class CustomHashes {
             hash = 31*hash + lastName.hashCode();
             return hash;
         }
-        */
+
 
         // Setters
         
@@ -71,9 +71,12 @@ public class CustomHashes {
                 n2 = new FullName("Jane", "Marie", "Doe"),
                 n3 = new FullName("Kylie", "Rachel", "Haggins");
 
-        System.out.println("Distance between hashes of n1, " + n1.getFullName() + "  and n2: " + n2.getFullName() + " is:" + Math.abs(modularHash(n1.hashCode(), 997) - modularHash(n2.hashCode(), 997))+ ".");
+        System.out.println("Distance between hashes of n1, " + n1.getFullName() + "  and n2: " + n2.getFullName() + " is:" +
+                Math.abs(modularHash(n1.hashCode(), 997) - modularHash(n2.hashCode(), 997))+ ".");
 
-        System.out.println("Distance between hashes of n1, " + n1.getFullName() + "  and n3: " + n3.getFullName() + " is:" + Math.abs(modularHash(n1.hashCode(), 997) - modularHash(n3.hashCode(), 997)) + ".");
+
+        System.out.println("Distance between hashes of n1, " + n1.getFullName() + "  and n3: " + n3.getFullName() + " is:" +
+                Math.abs(modularHash(n1.hashCode(), 997) - modularHash(n3.hashCode(), 997)) + ".");
 
     }
 }

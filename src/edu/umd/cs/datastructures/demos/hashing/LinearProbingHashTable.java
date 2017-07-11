@@ -34,7 +34,7 @@ public class LinearProbingHashTable {
             probe = (probe + 1) % buffer.length;
         }
         buffer[probe] = key;
-        if((++count) > (buffer.length / 2))
+        if((++count) > (buffer.length / 2)) // 50% of a load factor
             enlarge(); // This won't be costly or anything
     }
 
@@ -82,7 +82,24 @@ public class LinearProbingHashTable {
 
         /* Implement this! */
 
+        int probe = myHash(key);
+        while(buffer[probe] != null){
+            if(buffer[probe].equals(key)){ // Found it! Nullify and then re-insert all others
+                buffer[probe] = null;
+                probe = (probe + 1) % buffer.length;
+                while(buffer[probe] != null){
+                    String toBeReInserted = buffer[probe];
+                    buffer[probe] = null;
+                    count--;
+                    insert(toBeReInserted); // this increases count...
+                    probe = (probe + 1) % buffer.length;
+                }
+                count--;
+                return;
+            }
+            probe = (probe + 1) % buffer.length;
 
+        }
 
     }
 
