@@ -91,7 +91,7 @@ public class BinaryPatriciaTrie {
 
 	/** Finds the longest {@link String} stored in the Binary Patricia Trie. &quot;<i>Longest</i>&quot; is rigorously defined below.
 	 * @return The longest {@link String} stored in <tt>this</tt>. The following rules apply:
-	 * <ol><li>If the trie is empty, the <b>empty string</b> &quot;&quot; should be returned. <b>Careful: the empty string &quot;&quot; is <b>not</b> the same string as &quot; &quot;&#59;	the latter is a string consisting of a space character!</b></li>
+	 * <ol><li>If the trie is empty, the <b>empty string</b> &quot;&quot; should be returned. <b>Careful: the empty string &quot;&quot; is <em>not</em> the same string as &quot; &quot;&#59;	the latter is a string consisting of a space character!</b></li>
 	 * <li>If there exist two strings &sigma; and &sigma;&#39;	with length(&sigma;) = length(&sigma;&#39;), then the string with the highest <b>lexicographical order</b> is considered the longest.</li>
 	 * <li>In all other cases, the length of the strings is the only parameter compared.</li>
 	 * </ol>

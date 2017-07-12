@@ -1,11 +1,13 @@
 edu.umd.cs.datastructures.demos.bags
 edu.umd.cs.datastructures.demos.bags.clients
 edu.umd.cs.datastructures.demos.bags.testcases
+edu.umd.cs.datastructures.demos.hashing
 edu.umd.cs.datastructures.demos.matrices.java
 edu.umd.cs.datastructures.demos.splaying
 edu.umd.cs.datastructures.demos.traversals
 edu.umd.cs.datastructures.examcode.matrix
 edu.umd.cs.datastructures.examcode.stack
+edu.umd.cs.datastructures.projectskeletons.kdtree
+edu.umd.cs.datastructures.projectskeletons.kdtree.utils
 edu.umd.cs.datastructures.projectskeletons.patricia
 edu.umd.cs.datastructures.projectskeletons.tavl
-examples
