@@ -78,7 +78,8 @@ public class KDTree {
 	/**
 	 * Performs a range query on the KD-Tree. Returns all the {@link KDPoint}s whose
 	 * {@link KDPoint#distance(KDPoint) distance} from  <tt>p</tt> is <b>at most</b> <tt>range</tt>. This means that
-	 * range queries on the KD-Tree are <b>inclusive</b> of the range proper!
+	 * range queries on the KD-Tree are <b>inclusive</b> of the range proper! The query point itself should <b>NOT</b>
+	 * be reported.
 	 * @param p The query {@link KDPoint}.
 	 * @param range The maximum {@link KDPoint#distance(KDPoint, KDPoint)} from <tt>p</tt>
 	 * that we allow a {@link KDPoint} to have if it should be part of the solution.
@@ -91,6 +92,7 @@ public class KDTree {
 
 	/** Performs a nearest neighbor query on the <tt>KDTree</tt>. Returns the {@link KDPoint}
 	 * which is closest to <tt>p</tt>, as dictated by {@link KDPoint#distance(KDPoint) distance(KDPoint p)}.
+	 * This point will be <b>DISTINCT</b> from <tt>p</tt> (otherwise this would make this operation trivial to implement).
 	 * @param p The query {@link KDPoint}.
 	 * @return The solution to the nearest neighbor query. This method will return <tt>null</tt> if
 	 * there are no points other than <tt>p</tt> in the tree.
