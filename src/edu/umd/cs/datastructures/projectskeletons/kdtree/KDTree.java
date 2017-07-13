@@ -100,16 +100,16 @@ public class KDTree {
 	}
 
 	/**
-	 * Performs a k-nearest neighbors query on the <tt>KDTree</tt>. Returns the <em>k</em>
+	 * Performs a m-nearest neighbors query on the <tt>KDTree</tt>. Returns the <em>m</em>
 	 * {@link KDPoint}s which are nearest to <tt>p</tt>, as dictated by {@link KDPoint#distance(KDPoint) distance(KDPoint p)}.
 	 * The {@link KDPoint}s are sorted in ascending order of distance.
-	 * @param k A positive integer denoting the amount of neighbors to return.
+	 * @param m A positive integer denoting the amount of neighbors to return.
 	 * @param p The query point.
-	 * @return A {@link BoundedPriorityQueue} containing the k-nearest neighbors of <tt>p</tt>.
+	 * @return A {@link BoundedPriorityQueue} containing the m-nearest neighbors of <tt>p</tt>.
 	 * This queue will be empty if the tree contains only <tt>p</tt>.
-	 * @throws RuntimeException If <tt>k&lt;=0</tt>.
+	 * @throws RuntimeException If <tt>m&lt;=0</tt>.
 	 */
-	public BoundedPriorityQueue<KDPoint> kNearestNeighbors(int k, KDPoint p){
+	public BoundedPriorityQueue<KDPoint> mNearestNeighbors(int m, KDPoint p){
 		throw exc;
 	}
 
