@@ -79,7 +79,7 @@ public class KDTree {
 	 * Performs a range query on the KD-Tree. Returns all the {@link KDPoint}s whose
 	 * {@link KDPoint#distance(KDPoint) distance} from  <tt>p</tt> is <b>at most</b> <tt>range</tt>. This means that
 	 * range queries on the KD-Tree are <b>inclusive</b> of the range proper! The query point itself should <b>NOT</b>
-	 * be reported.
+	 * be reported. The <tt>KDPoint</tt>s are <b>NOT</b> required to be sorted by distance from <tt>p</tt>.
 	 * @param p The query {@link KDPoint}.
 	 * @param range The maximum {@link KDPoint#distance(KDPoint, KDPoint)} from <tt>p</tt>
 	 * that we allow a {@link KDPoint} to have if it should be part of the solution.
