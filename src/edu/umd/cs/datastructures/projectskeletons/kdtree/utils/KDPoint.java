@@ -59,13 +59,13 @@ public class KDPoint {
 	public boolean equals(Object o){
 		if(o == null)
 			return false;
-		if(o.getClass() != getClass()) // TODO: Make sure that it's ok to do a reference equality check here.
+		if(o.getClass() != getClass())
 			return false;
 		KDPoint oCasted = (KDPoint)o; // No ClassCastExceptions here because of above check
 		if(oCasted.coords.length != coords.length)
 			return false;
 		for(int i = 0; i < coords.length; i++)
-			if(coords[i] != oCasted.coords[i]) // TODO: Make sure that this is correct up to numerical accuracy.
+			if(coords[i] != oCasted.coords[i])
 				return false;
 		return true;
 	}
@@ -74,9 +74,9 @@ public class KDPoint {
 	 * Calculate the Euclidean distance between <tt>this</tt> and <tt>p</tt>. 
 	 * @param p The <tt>KDPoint</tt> to calculate the distance to.
 	 * @return The squared Euclidean distance between the two <tt>KDPoint</tt>s.
-	 * @throws RuntimeException if the dimensionality of the two KDPoints is different.
+	 * @throws RuntimeException if the dimensionalities of the two points are different.
 	 */
-	public double distance(KDPoint p){
+	public double distance(KDPoint p) throws RuntimeException{
 		if(coords.length != p.coords.length)
 			throw new RuntimeException("Cannot calculate the Euclidean Distance between KDPoints of different dimensionalities.");
 		double sum = 0.0;
