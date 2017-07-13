@@ -71,7 +71,7 @@ public class KDPoint {
 	}
 	
 	/**
-	 * Calculate the Euclidean distance between <tt>this</tt> and <tt>p</tt>. 
+	 * Calculate the squared Euclidean distance between <tt>this</tt> and <tt>p</tt>.
 	 * @param p The <tt>KDPoint</tt> to calculate the distance to.
 	 * @return The squared Euclidean distance between the two <tt>KDPoint</tt>s.
 	 * @throws RuntimeException if the dimensionalities of the two points are different.
@@ -82,7 +82,7 @@ public class KDPoint {
 		double sum = 0.0;
 		for(int i = 0; i < coords.length; i++)
 			sum += Math.pow(coords[i] - p.coords[i], 2);
-		return Math.sqrt(sum);
+		return sum;
 	}
 	
 	/**
