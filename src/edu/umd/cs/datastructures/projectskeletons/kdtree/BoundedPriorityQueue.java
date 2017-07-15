@@ -51,9 +51,10 @@ public class BoundedPriorityQueue<T> implements  Iterable<T>{
 
 	/**
 	 * Remove and return the minimum priority (top) element from the queue.
-	 * @return The minimum priority element from the queue.
+	 * @return The minimum priority element from the queue or <tt>null</tt> if <tt>this</tt> is empty.
 	 * @see #first()
 	 * @see #enqueue(Object, double)
+	 * @see #isEmpty()
 	 */
  	public T dequeue() {
 		throw exc;
