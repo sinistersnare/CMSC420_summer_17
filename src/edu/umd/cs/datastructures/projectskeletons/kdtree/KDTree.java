@@ -1,9 +1,9 @@
 package edu.umd.cs.datastructures.projectskeletons.kdtree; // <------------ ERASE THIS LINE BEFORE YOU SUBMIT!!!!
-import edu.umd.cs.datastructures.projectskeletons.kdtree.utils.*;
+import edu.umd.cs.datastructures.projectskeletons.kdtree.utils.*; // <------------ ERASE THIS LINE BEFORE YOU SUBMIT!!!!
 
 import java.util.Collection;
 /**
- * <tt>KDTree</tt> imlements <em>K</em>-D Trees. <em>K</em> is a positive integer.
+ * <tt>KDTree</tt> implements <em>K</em>-D Trees. <em>K</em> is a positive integer.
  *  By default, <em>k=2</em>. <tt>KDTree</tt> supports standard insertion, deletion and
  *  search routines, and also allows for range searching and nearest neighbor queries.
  *
