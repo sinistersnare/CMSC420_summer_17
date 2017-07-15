@@ -124,27 +124,27 @@ public class KDPointTests {
 		KDPoint one = new KDPoint(3.0), two = new KDPoint(0.0);
 		assertEquals(0, one.distance(one), EPSILON);
 		assertEquals(0, two.distance(two), EPSILON);
-		assertEquals(3, one.distance(two), EPSILON);
-		assertEquals(3, two.distance(one), EPSILON);
+		assertEquals(9, one.distance(two), EPSILON);
+		assertEquals(9, two.distance(one), EPSILON);
 		KDPoint three = new KDPoint(-3.0);
-		assertEquals(3, two.distance(three), EPSILON);
-		assertEquals(3, three.distance(two), EPSILON);
+		assertEquals(9, two.distance(three), EPSILON);
+		assertEquals(9, three.distance(two), EPSILON);
 
 		// Classic.
 		KDPoint oneOne = new KDPoint(1, 1);
-		assertEquals(Math.sqrt(2), new KDPoint().distance(oneOne), EPSILON);
+		assertEquals(2, new KDPoint().distance(oneOne), EPSILON);
 		KDPoint minusOneOne = new KDPoint(1, -1);
-		assertEquals(Math.sqrt(2), new KDPoint().distance(minusOneOne), EPSILON);
+		assertEquals(2, new KDPoint().distance(minusOneOne), EPSILON);
 		KDPoint oneMinusOne = new KDPoint(1, -1);
-		assertEquals(Math.sqrt(2), new KDPoint().distance(oneMinusOne), EPSILON);
+		assertEquals(2, new KDPoint().distance(oneMinusOne), EPSILON);
 		KDPoint minusOneminusOne = new KDPoint(-1, -1);
-		assertEquals(Math.sqrt(2), new KDPoint().distance(minusOneminusOne), EPSILON);
+		assertEquals(2, new KDPoint().distance(minusOneminusOne), EPSILON);
 
 		// And a not so trivial one
 		KDPoint complexPointOne = new KDPoint(3.5, 2.1, -10.9);
 		KDPoint complexPointTwo = new KDPoint(-1.4, 2.8, -0.0007);
-		assertEquals(Math.sqrt(143.29474049), complexPointOne.distance(complexPointTwo), EPSILON); // Computed with Google's calculator
-		assertEquals(Math.sqrt(143.29474049), complexPointTwo.distance(complexPointOne), EPSILON); 
+		assertEquals(143.29474049, complexPointOne.distance(complexPointTwo), EPSILON); // Computed with Google's calculator
+		assertEquals(143.29474049, complexPointTwo.distance(complexPointOne), EPSILON);
 	}
 
 	@Test
@@ -160,8 +160,8 @@ public class KDPointTests {
 		// The complex example from the previous test:
 		KDPoint complexPointOne = new KDPoint(3.5, 2.1, -10.9);
 		KDPoint complexPointTwo = new KDPoint(-1.4, 2.8, -0.0007);
-		assertEquals(Math.sqrt(143.29474049), distance(complexPointOne, complexPointTwo), EPSILON);
-		assertEquals(Math.sqrt(143.29474049), distance(complexPointTwo, complexPointOne), EPSILON);
+		assertEquals(143.29474049, distance(complexPointOne, complexPointTwo), EPSILON);
+		assertEquals(143.29474049, distance(complexPointTwo, complexPointOne), EPSILON);
 		
 		// And, finally, proper exceptions thrown when comparing objects of different
 		// dimensionalities:
