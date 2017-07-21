@@ -211,6 +211,9 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 
 		@Override
 		public void remove() {
+			if (this.cur == -1) {
+				throw new IllegalStateException("Can not call remove() without calling next() first!");
+			}
 			this.inst.queue[this.cur] = null;
 
 			for (int i = this.cur; i < this.inst.size - 1; i++) {

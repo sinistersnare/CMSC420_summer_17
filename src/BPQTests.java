@@ -208,4 +208,18 @@ public class BPQTests {
 		assertFalse(it.hasNext());
 		assertEquals(0, b.size());
 	}
+	
+	@Test
+	public void testITeratorRemoveThrowsOnIllegalState() {
+		b.enqueue(0, 0);
+		Iterator<Integer> it = b.iterator();
+		assertTrue(it.hasNext());
+		try {
+			// must call next before calling remove...
+			it.remove();
+			assertTrue(false);
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
 }

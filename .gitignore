@@ -1,3 +1,5 @@
+.DS_Store
+
 # I modified the list of ignores given to me by the latest pull.
 /build
 /out

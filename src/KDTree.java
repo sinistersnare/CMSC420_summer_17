@@ -1,5 +1,4 @@
 
-
 import java.util.Collection;
 
 import utils.KDPoint;
@@ -20,6 +19,11 @@ public class KDTree {
 
 		Node(KDPoint p) {
 			this.point = p;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("Node<Point: %s>", this.point.toString());
 		}
 	}
 
@@ -61,17 +65,25 @@ public class KDTree {
 		this.root = insert(new Node(p), this.root, 0);
 	}
 
-	public Node insert(Node n, Node cur, int curDim) {
+	private Node insert(Node n, Node cur, int curDim) {
 		if (cur == null) {
 			return n;
 		}
-		double curVal = cur.point.coords[curDim];
-		double nVal = n.point.coords[curDim];
-		if (curVal < nVal) {
-			// current < valToAdd, insert @ right tree.
+		if (n.point.equals(cur.point)) {
+			// if the points are the same,
+			// just dont do anything.
+			return cur;
+		}
+		// jut pray theyre not different dimensions
+		// (Jason said he wont test for it...)
+		// (pray because we are using cur coords len for both.
+		double curVal = cur.point.coords[curDim % cur.point.coords.length];
+		double nVal = n.point.coords[curDim % cur.point.coords.length];
+		if (curVal <= nVal) {
+			// current <= valToAdd, insert @ right tree.
 			cur.right = insert(n, cur.right, curDim + 1);
 		} else {
-			// if current >= valToAdd, insert @ left tree.
+			// if current > valToAdd, insert @ left tree.
 			cur.left = insert(n, cur.left, curDim + 1);
 		}
 		return cur;
@@ -92,7 +104,7 @@ public class KDTree {
 		if (cur == null) {
 			return null;
 		}
-		//if (cur.point.coords[curdim])
+		// if (cur.point.coords[curdim])
 		return cur;
 	}
 
@@ -204,17 +216,14 @@ public class KDTree {
 	 * @return The height of <tt>this</tt>.
 	 */
 	public int height() {
-		if (this.root == null) {
-			return -1;
-		}
-		return height(this.root);
+		return height(this.root) - 1;
 	}
 
 	private int height(Node cur) {
 		if (cur == null) {
 			return 0;
 		}
-		return Math.max(height(cur.left) + 1, height(cur.right) + 1);
+		return Math.max(height(cur.left), height(cur.right)) + 1;
 	}
 
 	/**
