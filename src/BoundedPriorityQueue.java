@@ -1,4 +1,3 @@
-
 import java.lang.reflect.Array;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -176,8 +175,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 	/**
 	 * Returns a fail-fast {@link Iterator} over the queue's elements. The
 	 * Iterator exposes the elements in linear order according to the ordering
-	 * imposed by
-	 * {@linkplain utils.KNNComparator}.
+	 * imposed by {@linkplain utils.KNNComparator}.
 	 * 
 	 * @return An {@link Iterator} over the queue's elements.
 	 */
@@ -199,7 +197,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 
 		@Override
 		public boolean hasNext() {
-			return cur+1 < inst.size;
+			return cur + 1 < inst.size;
 		}
 
 		@Override
@@ -221,6 +219,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 			// overwrite last element to null.
 			this.inst.queue[this.inst.size - 1] = null;
 			this.inst.size--;
+			this.cur--;
 		}
 	}
 

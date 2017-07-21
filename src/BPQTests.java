@@ -184,4 +184,28 @@ public class BPQTests {
 			assertTrue(true);
 		}
 	}
+	
+	@Test
+	public void testIteratorRemoveAll() {
+		b.enqueue(0, 0);
+		b.enqueue(1, 1);
+		b.enqueue(2, 2);
+		b.enqueue(3, 3);
+		assertEquals(4, b.size());
+		Iterator<Integer> it = b.iterator();
+		assertTrue(it.hasNext());
+		assertEquals(0, it.next().intValue());
+		it.remove();
+		assertTrue(it.hasNext());
+		assertEquals(1, it.next().intValue());
+		it.remove();
+		assertTrue(it.hasNext());
+		assertEquals(2, it.next().intValue());
+		it.remove();
+		assertTrue(it.hasNext());
+		assertEquals(3, it.next().intValue());
+		it.remove();
+		assertFalse(it.hasNext());
+		assertEquals(0, b.size());
+	}
 }
