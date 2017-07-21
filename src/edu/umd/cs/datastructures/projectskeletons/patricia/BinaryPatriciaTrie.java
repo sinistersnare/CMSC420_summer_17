@@ -7,17 +7,17 @@ import java.util.List;
 
 //@formatter:off
 /**
- * @author Davis Ross Silverman 
+ * @author Davis Ross Silverman
  * 
- * <p>
- * <tt>BinaryPatriciaTrie</tt> is a Patricia Trie over the binary
- * alphabet &#123;0, 1&#125;. By restricting themselves to this small
- * but terrificly useful alphabet, Binary Patricia Tries combine all
- * the positive aspects of Patricia Tries while shedding the storage
- * cost typically associated with Tries that deal with huge alphabets.
- * </p>
+ *         <p>
+ *         <tt>BinaryPatriciaTrie</tt> is a Patricia Trie over the binary
+ *         alphabet &#123;0, 1&#125;. By restricting themselves to this small
+ *         but terrificly useful alphabet, Binary Patricia Tries combine all the
+ *         positive aspects of Patricia Tries while shedding the storage cost
+ *         typically associated with Tries that deal with huge alphabets.
+ *         </p>
  */
-//@formatter:on
+// @formatter:on
 public class BinaryPatriciaTrie {
 
 	// TODO: maybe in some cases root is populated after a delete?
@@ -174,10 +174,10 @@ public class BinaryPatriciaTrie {
 		cur.value = curRest;
 		restFinal.isEnd = true;
 		restFinal.value = restRest;
-		
+
 		if (curRest.charAt(0) == '0') {
 			newCur.left = cur;
-			newCur.right = restFinal; 
+			newCur.right = restFinal;
 		} else {
 			newCur.left = restFinal;
 			newCur.right = cur;
