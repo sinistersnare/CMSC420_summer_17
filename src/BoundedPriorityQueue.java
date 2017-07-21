@@ -1,6 +1,8 @@
-package edu.umd.cs.datastructures.projectskeletons.kdtree; // <------------ ERASE THIS LINE BEFORE YOU SUBMIT!!!!
 
+import java.lang.reflect.Array;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.StringJoiner;
 
 /**
  * <p>
@@ -28,14 +30,16 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 			this.elem = elem;
 			this.priority = priority;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("Pair<elem: %s, priority: %s>", elem.toString(), priority);
+		}
 	}
 
-	private Pair[] queue;
-	int size;
-
-	/*
-	 * Put your private fields and methods here!
-	 */
+	Pair[] queue;
+	private int size;
+	int modCount;
 
 	/**
 	 * Constructor that specifies the size of our queue.
@@ -48,7 +52,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public BoundedPriorityQueue(int size) {
-		this.queue = (Pair[]) new Object[size];
+		this.queue = (Pair[]) Array.newInstance(Pair.class, size);
 	}
 
 	/**
@@ -67,25 +71,30 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 	 * @see #dequeue()
 	 */
 	public void enqueue(T element, double priority) {
-		if (this.size == this.queue.length && this.queue[this.size - 1].priority > priority) {
-			this.queue[this.size - 1] = new Pair(element, priority);
-		} else {
-			// FIXME: this logic is maybe broken, off-by-one error
-			// probably at condition-clause of for loop
-			// test thoroughly....
-			// make sure that at max capacity,
-			// the last element is correctly ejected.
-			// perhaps that if statement above is unneeded
-			Pair curPair = new Pair(element, priority);
-			for (int i = 0; i <= this.queue.length && this.queue[i] != null; i++) {
-				if (curPair.priority < this.queue[i].priority) {
-					Pair mid = this.queue[i];
-					this.queue[i] = curPair;
-					curPair = mid;
+		Pair cur = new Pair(element, priority);
+		boolean first = true;
+
+		for (int i = 0; i < this.queue.length && cur != null; i++) {
+			if (first) {
+				if (this.queue[i] == null || cur.priority < this.queue[i].priority) {
+					Pair old = this.queue[i];
+					this.queue[i] = cur;
+					cur = old;
+					// no longer first element,
+					// so to preserve FIFO, use <= from now on.
+					first = false;
+				}
+			} else {
+				// use <= when not first element to preserve FIFO order.
+				if (this.queue[i] == null || cur.priority <= this.queue[i].priority) {
+					Pair old = this.queue[i];
+					this.queue[i] = cur;
+					cur = old;
 				}
 			}
 		}
-		this.size++;
+		this.size = Math.min(this.size + 1, this.queue.length);
+		this.modCount++;
 	}
 
 	/**
@@ -99,10 +108,16 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 		if (this.size == 0) {
 			return null;
 		}
-		Pair min = this.queue[--this.size];
-		this.queue[this.size] = null;
-		return min.elem;
+		Pair ret = this.queue[0];
 
+		for (int i = 0; i < this.size - 1; i++) {
+			this.queue[i] = this.queue[i + 1];
+		}
+		// overwrite last element to null.
+		this.queue[this.size - 1] = null;
+		this.size--;
+		this.modCount++;
+		return ret.elem;
 	}
 
 	/**
@@ -117,7 +132,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 		if (this.size == 0) {
 			return null;
 		}
-		return this.queue[this.size - 1].elem;
+		return this.queue[0].elem;
 	}
 
 	/**
@@ -135,7 +150,7 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 		if (this.size == 0) {
 			return null;
 		}
-		return this.queue[0].elem;
+		return this.queue[this.size - 1].elem;
 	}
 
 	/**
@@ -162,12 +177,61 @@ public class BoundedPriorityQueue<T> implements Iterable<T> {
 	 * Returns a fail-fast {@link Iterator} over the queue's elements. The
 	 * Iterator exposes the elements in linear order according to the ordering
 	 * imposed by
-	 * {@linkplain edu.umd.cs.datastructures.projectskeletons.kdtree.utils.KNNComparator}.
+	 * {@linkplain utils.KNNComparator}.
 	 * 
 	 * @return An {@link Iterator} over the queue's elements.
 	 */
 	@Override
 	public Iterator<T> iterator() {
+		return new BPQIterator(this);
 	}
 
+	class BPQIterator implements Iterator<T> {
+		int expectedModCount;
+		BoundedPriorityQueue<T> inst;
+		int cur;
+
+		BPQIterator(BoundedPriorityQueue<T> inst) {
+			this.inst = inst;
+			this.expectedModCount = inst.size;
+			this.cur = -1;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return cur+1 < inst.size;
+		}
+
+		@Override
+		public T next() {
+			if (this.expectedModCount != this.inst.modCount) {
+				throw new ConcurrentModificationException();
+			}
+			this.cur++;
+			return this.inst.queue[this.cur].elem;
+		}
+
+		@Override
+		public void remove() {
+			this.inst.queue[this.cur] = null;
+
+			for (int i = this.cur; i < this.inst.size - 1; i++) {
+				this.inst.queue[i] = this.inst.queue[i + 1];
+			}
+			// overwrite last element to null.
+			this.inst.queue[this.inst.size - 1] = null;
+			this.inst.size--;
+		}
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner sj = new StringJoiner(",", "[", "]");
+		for (Pair p : this.queue) {
+			if (p != null) {
+				sj.add(p.toString());
+			}
+		}
+		return sj.toString();
+	}
 }

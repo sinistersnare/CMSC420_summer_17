@@ -1,8 +1,8 @@
-package edu.umd.cs.datastructures.projectskeletons.kdtree; // <------------ ERASE THIS LINE BEFORE YOU SUBMIT!!!!
 
-import edu.umd.cs.datastructures.projectskeletons.kdtree.utils.*;
 
 import java.util.Collection;
+
+import utils.KDPoint;
 
 /**
  * <tt>KDTree</tt> imlements <em>K</em>-D Trees. <em>K</em> is a positive
@@ -85,6 +85,15 @@ public class KDTree {
 	 *            The {@link KDPoint} to delete from the tree.
 	 */
 	public void delete(KDPoint p) {
+		this.root = delete(p, this.root, 0);
+	}
+
+	private Node delete(KDPoint p, Node cur, int curDim) {
+		if (cur == null) {
+			return null;
+		}
+		//if (cur.point.coords[curdim])
+		return cur;
 	}
 
 	/**
@@ -148,6 +157,7 @@ public class KDTree {
 	 *         points which satisfy the query.
 	 */
 	public Collection<KDPoint> range(KDPoint p, double range) {
+		throw new IllegalArgumentException();
 	}
 
 	/**
@@ -184,6 +194,7 @@ public class KDTree {
 	 *             If <tt>m&lt;=0</tt>.
 	 */
 	public BoundedPriorityQueue<KDPoint> mNearestNeighbors(int m, KDPoint p) {
+		throw new IllegalArgumentException();
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package edu.umd.cs.datastructures.projectskeletons.kdtree.utils; // ERASE THIS LINE BEFORE YOU SUBMIT!
+package utils; // ERASE THIS LINE BEFORE YOU SUBMIT!
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package edu.umd.cs.datastructures.projectskeletons.kdtree.utils; // ERASE THIS LINE BEFORE YOU SUBMIT!
+package utils; // ERASE THIS LINE BEFORE YOU SUBMIT!
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +8,7 @@ import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static edu.umd.cs.datastructures.projectskeletons.kdtree.utils.KDPoint.distance; // Exactly why the import cannot be compressed to a simple KDPoint.distance is beyond me.
+import static utils.KDPoint.distance;
 
 /**
  * <tt>KDPointTests</tt> is a unit testing class for {@link KDPoint}. We just
